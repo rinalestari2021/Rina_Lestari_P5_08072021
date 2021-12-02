@@ -42,3 +42,22 @@ fetch("http://localhost:3000/api/products").then((response) => {
     }
   });
 });
+
+//return fetch
+async function getArticles() {
+  return fetch("http://localhost:3000/api/products")
+    .then(function (response) {
+      return response.json();
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+console.log(getArticles());
+
+function main() {
+  let articles = await getArticles();
+  for (i of articles) {
+    displayArticles(i);
+  }
+}
