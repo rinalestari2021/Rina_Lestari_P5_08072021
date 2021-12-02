@@ -8,9 +8,9 @@ fetch("http://localhost:3000/api/products").then((response) => {
     for (let i = 0; i < data.lenght; i++) {
       console.log(data);
 
-      // create elements inside boucles & atribut
+      // create elements inside boucles & attribut
       let section = document.querySelector(".items");
-      section.appendChild(link).setAttribute("href", "lien vers page2");
+      section.appendChild(link).setAttribute("href", "./product.html?id=42");
       let items = document.createElement("article");
       items.appendChild(article);
       let link = document.createElement("a");
