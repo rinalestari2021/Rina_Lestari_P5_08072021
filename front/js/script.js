@@ -4,17 +4,17 @@ let items = document.getElementById("items");
 console.log("Items : ", items);
 
 fetch("http://localhost:3000/api/products").then((response) => {
-  response.json().then((products) => {
-    for (let i = 0; i < products.lenght; i++) {
-      console.log("products : ", products);
+  response.json().then((json) => {
+    for (let i = 0; i < data.lenght; i++) {
+      console.log(data);
 
       // create elements inside boucles & atribut
       let section = document.querySelector(".items");
-      section.appendChild(items);
+      section.appendChild(link).setAttribute("href", "lien vers page2");
       let items = document.createElement("article");
       items.appendChild(article);
       let link = document.createElement("a");
-      link.appendChild(article).setAttribute("href", "lien vers page2");
+      link.appendChild(article);
       let img = document.createElement("img");
       article.appendChild(img).setAttribute("src", data[i].imageUrl);
       let h3 = document.createElement("h3");
@@ -22,20 +22,9 @@ fetch("http://localhost:3000/api/products").then((response) => {
       let p = document.createElement("p");
       article.appendChild(p).setAttribute("class", "productDescription");
 
-      let items = document.createElement(article),
-        a;
-
-      for (let i = 0, c = article.lenght; i < c; i++) {
-        items = document.createElement("article");
-
-        items.appendChild(a);
-        a.appendChild("article");
-
-        mainDiv.appendChild(items);
-        mainDiv.appendChild(a);
-
-        document.body.appendChild(items);
-      }
+      //adding tittle of attribut
+      document.querySelectorAll("h3")[i].innerHTML = data[i].name;
+      document.querySelectorAll("p")[i].innerHTML = data[i].description;
 
       //parcourir le tableau products
       // pour chaque product
