@@ -5,32 +5,30 @@ console.log("items : ", items);
 
 fetch("http://localhost:3000/api/products").then((response) => {
   response.json().then((data) => {
-    console.log(data);
-    for (let items of data) {
-      items.innerHTML += "<img src=${products.url}>";
+    console.log(data.data.product);
+    for (let items of products) {
+      items.innerHTML += "<items=${products.url}>";
     }
   });
 
   // create elements inside boucles & attribut
-  let items = document.querySelector("#items");
+  let section = document.querySelector("#items");
   let article = document.createElement("article");
   items.appendChild(article);
   let link = document.createElement("a");
-  article.appendChild(link).setAttribute("href", "./product.html?id=42");
+  section.appendChild(link).setAttribute("href", "./product.html?id=42");
   let img = document.createElement("img");
-  article.appendChild(img).setAttribute("src", "/back/images");
+  article.appendChild(img).setAttribute("src", "./images/");
   let h3 = document.createElement("h3");
   article.appendChild(h3).setAttribute("class", "productName");
   let p = document.createElement("p");
   article.appendChild(p).setAttribute("class", "productDescription");
 
   //adding tittle of attribut
-  document.querySelectorAll("a").innerHTML = products.href;
-  document.querySelectorAll("img").innerHTML = products.imageURL;
-  document.querySelectorAll("h3").innerHTML = products.name;
-  document.querySelectorAll("p").innerHTML = products.description;
-
-  //tableau products
+  document.querySelectorAll("a").innerHTML += product.href;
+  document.querySelectorAll("img").innerHTML += product.imageURL;
+  document.querySelectorAll("h3").innerHTML += product.name;
+  document.querySelectorAll("p").innerHTML += product.description;
 
   /*let products = [
       "kanap01",
@@ -63,7 +61,7 @@ fetch("http://localhost:3000/api/products").then((response) => {
   // definir les attributs des éléments
 
   // mettre le <a> dans items
-  let elt = document.getElementById("item");
+  let elt = document.getElementById("items");
   elt.innerHTML = "<a href>";
 });
 
@@ -71,3 +69,26 @@ function images() {
   var img = document.getElementsByClassName(img);
   img.style.visibility = visible ? "visible" : "hidden";
 }
+
+//creation promesse
+let promiseGetProducts = new Promise((resolve, reject) => {
+  if (typeof products !== "undefined") {
+    resolve(products);
+  } else {
+    reject("Cant get the products");
+  }
+});
+
+//get the status of the promise
+promiseGetProducts
+  .then((n) => {
+    let products = "items";
+    for (let actu of n) {
+      items += "<section>${actu.article}</section>";
+    }
+    items += "</section>";
+    document.querySelector("#items").innerHTML = products;
+  })
+  .catch(function (e) {
+    console.log(e);
+  });
