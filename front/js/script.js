@@ -25,8 +25,8 @@ fetch("http://localhost:3000/api/products").then((response) => {
       //create attribut
       items.setAttribute("href", "./product.html?id=42");
       article.setAttribute("src", "../images/");
-      article.setAttribute("class", "productName");
-      article.setAttribute("class", "productDescription");
+      article.setAttribute("h3", "productName");
+      article.setAttribute("p", "productDescription");
 
       //get the content
       link.textContent = product.href;
