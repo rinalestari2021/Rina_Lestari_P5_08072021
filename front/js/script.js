@@ -8,26 +8,40 @@ fetch("http://localhost:3000/api/products").then((response) => {
   response.json().then((products) => {
     console.log("===========", products);
     for (let product of products) {
+      //create elements
       let article = document.createElement("article");
-      items.appendChild(article);
-
       let link = document.createElement("a");
-
-      items.appendChild(link);
-      items.setAttribute("href", "./product.html?id=42");
-
       let img = document.createElement("img");
-
-      article
-        .appendChild(img)
-        .setAttribute("src", "http://localhost:3000/images/product01.jpg");
-
       let h3 = document.createElement("h3");
-      article.appendChild(h3).setAttribute("class", "productName");
-
       let p = document.createElement("p");
-      p.textContent = product.Description;
-      article.appendChild(p).setAttribute("class", "productDescription");
+
+      //create appendChild
+      items.appendChild(article);
+      items.appendChild(link);
+      article.appendChild(img);
+      article.appendChild(h3);
+      article.appendChild(p);
+
+      //create attribut
+      items.setAttribute("href", "./product.html?id=42");
+      article.setAttribute("src", "../images/");
+      article.setAttribute("class", "productName");
+      article.setAttribute("class", "productDescription");
+
+      //get the content
+      link.textContent = product.href;
+      img.src = product.imageUrl;
+      img.alt = product.altTxt;
+      h3.textContent = product.name;
+      p.textContent = product.description;
+
+      //insert elements HTML
+      let products = document.getElementById("items");
+      product.innerHTML =
+        "<a href></a><article><img src><><h3></h3><p></p></article>";
+      img.innerHTML = "Image Element Added";
+      h3.innerHTML = "Name";
+      p.innerHTML = "Description";
     }
   });
 });
