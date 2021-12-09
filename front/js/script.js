@@ -45,7 +45,9 @@ fetch("http://localhost:3000/api/products").then((response) => {
       document.querySelector("p").innerHTML = product.description;
 
       /*//set the property of href
-      a.href = "./product.html?id=42";
+       document.querySelector("img").onclick = function () {
+        location.href = "./product.html";
+      };
 
       //append the href element into body
       document.body.prepend(a);*/
