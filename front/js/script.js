@@ -43,6 +43,30 @@ fetch("http://localhost:3000/api/products").then((response) => {
       img.innerHTML = "Image Element Added";
       document.querySelector("h3").innerHTML = product.name;
       document.querySelector("p").innerHTML = product.description;
+
+      /*//set the property of href
+      a.href = "./product.html?id=42";
+
+      //append the href element into body
+      document.body.prepend(a);*/
+
+      /*let itemsClicks = 0;
+      let articlesClicks = 0;
+
+      document.getElementById("items").addEventListener("click", function () {
+        document.getElementsByClassName("itemsClicks").innerText =
+          ++itemsClicks + "";
+      });
+
+      document
+        .getElementsByClassName("articles")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          document.getElementsByClassName(articlesClicks).innerText =
+            ++articlesClicks + "";
+      });*/
     }
   });
 });
