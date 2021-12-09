@@ -36,12 +36,13 @@ fetch("http://localhost:3000/api/products").then((response) => {
       p.textContent = product.description;
 
       //insert elements HTML
-      let products = document.getElementById("items");
-      product.innerHTML =
-        "<a href></a><article><img src><><h3></h3><p></p></article>";
+      function addCode() {
+        document.getElementById("items").innerHTML +=
+          "<a href></a><article><img src><><h3></h3><p></p></article>";
+      }
       img.innerHTML = "Image Element Added";
-      h3.innerHTML = "Name";
-      p.innerHTML = "Description";
+      document.querySelector("h3").innerHTML = product.name;
+      document.querySelector("p").innerHTML = product.description;
     }
   });
 });
