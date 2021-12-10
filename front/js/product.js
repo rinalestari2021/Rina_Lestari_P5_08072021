@@ -1,7 +1,10 @@
-//call API with Fetch
-let url = "http://localhost:3000/api/products";
+//get URL
+let getId = new URLSearchParams(window.location.search);
+let urlData = new URL(
+  "http://localhost:3000/api/product.html?id=${product._id}"
+);
 
-document.querySelector(".item").addEventListener("input", function () {
+/*document.querySelector(".item").addEventListener("input", function () {
   if (this.value.lenght) {
     let url = "http://localhost:3000/api/products";
 
@@ -22,7 +25,7 @@ document.querySelector(".item").addEventListener("input", function () {
 
 //evenement
 
-let getArticles = document.querySelector(".item article.img > a");
+let getArticles = document.querySelector(".item article.img > a");*/
 
 //insert products
 /*function insertEntity() {
