@@ -22,14 +22,29 @@ document.querySelector(".item").addEventListener("input", function () {
 
 //evenement
 
-let getArticles = document.querySelector("#item article.img > a");
+let getArticles = document.querySelector(".item article.img > a");
 
-/*function displayImage(src, width, height, alt) {
-  var a = document.createElement("img");
-  a.src = src;
-  a.width = width;
-  a.height = height;
-  a.alt = alt;
-  document.body.appendChild(a);
+//insert products
+/*function insertEntity() {
+  let entity = getFromInput();
+
+  let options = {
+    method:'POST',
+    headers: {
+      'Content-Type' : 'application/json'
+    },
+    body: JSON.stringify(entity)
+  },
+
+  fetch(vm.options.http://localhost:3000/api/products + vm.options.urlEndpoint, options)
+  .then(response => processResponse(response))
+  .then(data => {
+    if (vm.lastStatus.ok) {
+      vm.lastStatus.response = data;
+      setInput(data);
+    }
+    else {displayError(ajaxCommon.handleError(vm.lastStatus));}
+  })
+  .catch(error => displayError(ajaxCommon.handleAjaxError(error)));
 }
-displayImage("logo.png", "Photographie d'un canapé");*/
+  ;*/

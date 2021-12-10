@@ -9,15 +9,15 @@ fetch("http://localhost:3000/api/products").then((response) => {
     console.log("===========", products);
     for (let product of products) {
       //create elements
-      let article = document.createElement("article");
       let link = document.createElement("a");
+      let article = document.createElement("article");
       let img = document.createElement("img");
       let h3 = document.createElement("h3");
       let p = document.createElement("p");
 
       //create appendChild
-      items.appendChild(article);
       items.appendChild(link);
+      link.appendChild(article);
       article.appendChild(img);
       article.appendChild(h3);
       article.appendChild(p);
@@ -29,46 +29,11 @@ fetch("http://localhost:3000/api/products").then((response) => {
       article.setAttribute("p", "productDescription");
 
       //get the content
-      link.textContent = product.href;
+      link.href = "./product.html?id=${product._id}";
       img.src = product.imageUrl;
       img.alt = product.altTxt;
       h3.textContent = product.name;
       p.textContent = product.description;
-
-      //insert elements HTML
-      function addCode() {
-        document.getElementById("items").innerHTML +=
-          "<a href></a><article><img src><><h3></h3><p></p></article>";
-      }
-      img.innerHTML = "Image Element Added";
-      document.querySelector("h3").innerHTML = product.name;
-      document.querySelector("p").innerHTML = product.description;
-
-      /*//set the property of href
-       document.querySelector("img").onclick = function () {
-        location.href = "./product.html";
-      };
-
-      //append the href element into body
-      document.body.prepend(a);*/
-
-      /*let itemsClicks = 0;
-      let articlesClicks = 0;
-
-      document.getElementById("items").addEventListener("click", function () {
-        document.getElementsByClassName("itemsClicks").innerText =
-          ++itemsClicks + "";
-      });
-
-      document
-        .getElementsByClassName("articles")
-        .addEventListener("click", function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-
-          document.getElementsByClassName(articlesClicks).innerText =
-            ++articlesClicks + "";
-      });*/
     }
   });
 });
