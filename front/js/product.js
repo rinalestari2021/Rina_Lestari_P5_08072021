@@ -1,53 +1,28 @@
 //get URL
-let getId = new URLSearchParams(window.location.search);
-let urlData = new URL(
-  "http://localhost:3000/api/product.html?id=${product._id}"
-);
+var searchUrl = new URLSearchParams(window.location.search);
+var getId = searchUrl.get("id");
 
-/*document.querySelector(".item").addEventListener("input", function () {
-  if (this.value.lenght) {
-    let url = "http://localhost:3000/api/products";
+// async
+const fetchProducts = async () => {
+  products = await fetch(
+    "http://localhost:3000/api/products/${products._id}"
+  ).then(res.json());
 
-    fetch(url).then((response) =>
-      response
-        .json()
-        .then((data) => {
-          console.log(data);
-          let display = "<item>";
-          for (let item of data) {
-            items.innerHTML += "<item=${products.url}>";
-          }
-        })
-        .catch((error) => console.log(error))
-    );
-  }
-});
+  console.log(product);
 
-//evenement
+  // get product
+  document.getElementsByClassName("img").src = product.imageUrl;
+  document.getElementsById("img").alt = product.altTxt;
+  document.getElementsById("title").textContent = product.name;
+  document.getElementsById("price").textContent = product.price;
+  document.getElementsById("description").textContent = product.description;
+  document.getElementsById("colors").textContent = product.colors;
 
-let getArticles = document.querySelector(".item article.img > a");*/
-
-//insert products
-/*function insertEntity() {
-  let entity = getFromInput();
-
-  let options = {
-    method:'POST',
-    headers: {
-      'Content-Type' : 'application/json'
-    },
-    body: JSON.stringify(entity)
-  },
-
-  fetch(vm.options.http://localhost:3000/api/products + vm.options.urlEndpoint, options)
-  .then(response => processResponse(response))
-  .then(data => {
-    if (vm.lastStatus.ok) {
-      vm.lastStatus.response = data;
-      setInput(data);
-    }
-    else {displayError(ajaxCommon.handleError(vm.lastStatus));}
-  })
-  .catch(error => displayError(ajaxCommon.handleAjaxError(error)));
-}
-  ;*/
+  link.href = "./product.html?id=${product._id}";
+  img.src = product.imageUrl;
+  img.alt = product.altTxt;
+  title.textContent = product.name;
+  price.textContent = product.price;
+  description.textContent = product.description;
+  color.textContent = product.colors;
+};
