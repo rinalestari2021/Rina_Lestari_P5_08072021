@@ -1,19 +1,43 @@
 //get URL
-/*var searchUrl = new URLSearchParams(window.location.search);
-var getId = searchUrl.get("id");*/
+var searchUrl = new URLSearchParams(window.location.search);
+var getId = searchUrl.get("id");
+console.log(getId);
 
-function getParameter(_id) {
-  let parameters = new URLSearchParams(window.location.search);
-  return parameters.get(products._id);
-}
+//fetch
+const Apiproducts = () => {
+  fetch("http://localhost:3000/api/products/${getId}")
+    .then((response) => response.json())
+    .then((data) => {
+      products(data);
+    });
+};
 
 // async
-const fetchProducts = async () => {
-  products = await fetch(
-    "http://localhost:3000/api/products/${products._id}"
-  ).then(res.json());
+const ApiProducts = async () => {
+  let apiCall = await fetch("http://localhost:3000/api/products/${getId}");
+  let products = await apiCall.json();
+  showProducts(data);
+};
 
-  console.log(product);
+const showProducts = (apiProducts) => {
+  //creating the selectors
+  const imgDiv = document.querySelector(".item_img");
+  const titleDiv = document.querySelector("#title");
+  const priceDiv = document.querySelector("#price");
+  const descriptionDiv = document.querySelector("#description");
+  const select = document.querySelector("select");
+
+  const quantity = document.querySelector('input[name="itemQuantity"]').value;
+
+  data.colors.forEach((color) => {
+    var option = document.createElement("option");
+    option.value = color;
+    option.innerHTML = color;
+    select.appendChild(option);
+  });
+};
+
+/*console.log(product);
 
   //create elements
   let img = document.createElement("img");
@@ -35,7 +59,7 @@ const fetchProducts = async () => {
   document.getElementsById("description").textContent = product.description;
   document.getElementsById("colors").textContent = product.colors;
 
-  link.href = "http://localhost:3000/api/products/${products._id}";
+  link.href = "./products.html?id=${products._id}";
   img.src = product.imageUrl;
   img.alt = product.altTxt;
   title.textContent = product.name;
@@ -66,5 +90,4 @@ const fetchProducts = async () => {
 
   selectColors.addEventListener("click", () => {
     selectColors.classList.toggle("colors-clicked");
-  });
-};
+  });*/
