@@ -19,11 +19,13 @@ const fetchProducts = async () => {
   let img = document.createElement("img");
   let h1 = document.createElement("h1");
   let p = document.createElement("p");
+  let option = document.createElement("option");
 
   //create appendChild
   article.appendChild(img);
   article.appendChild(h1);
   article.appendChild(p);
+  option.appendChild(colors);
 
   // get product
   document.getElementsByClassName("img").src = product.imageUrl;
@@ -39,5 +41,30 @@ const fetchProducts = async () => {
   title.textContent = product.name;
   price.textContent = product.price;
   description.textContent = product.description;
-  color.textContent = product.colors;
+  color.value = product.colors;
+  color.textContent = colors;
+
+  //event change on option
+  document.addEventListener(
+    "DOMContentload",
+    function () {
+      document.querySelector('option[name="color_select"]').onchange =
+        changeEventHandler;
+    },
+    false
+  );
+
+  function changechangeEventHandler(event) {
+    if (!event.target.value);
+    else event.target.value + "colors.";
+  }
+
+  //event on click
+  const selectColors = document.querySelector(".color-select");
+  const value = document.getElementById("#colors");
+  const response = document.querySelector("option");
+
+  selectColors.addEventListener("click", () => {
+    selectColors.classList.toggle("colors-clicked");
+  });
 };
