@@ -1,5 +1,4 @@
 // call API with Fetch
-let items = document.getElementById("items");
 
 console.log("items : ", items);
 
@@ -9,6 +8,7 @@ fetch("http://localhost:3000/api/products").then((response) => {
     console.log("===========", products);
     for (let product of products) {
       //create elements
+      let items = document.getElementById("items");
       let link = document.createElement("a");
       let article = document.createElement("article");
       let img = document.createElement("img");
@@ -23,13 +23,13 @@ fetch("http://localhost:3000/api/products").then((response) => {
       article.appendChild(p);
 
       //create attribut
-      items.setAttribute("href", "./product.html?id=42");
+      link.setAttribute("href", "./product.html?id=" + product._id);
       article.setAttribute("src", "../images/");
       article.setAttribute("h3", "productName");
       article.setAttribute("p", "productDescription");
 
       //get the content
-      link.href = "./product.html?id=${product._id}";
+
       img.src = product.imageUrl;
       img.alt = product.altTxt;
       h3.textContent = product.name;
