@@ -1,7 +1,4 @@
-// call API with Fetch
-
-console.log("items : ", items);
-
+// Fetch
 fetch("http://localhost:3000/api/products").then((response) => {
   console.log(response);
   response.json().then((products) => {

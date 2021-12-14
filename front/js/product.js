@@ -1,4 +1,4 @@
-function fetchProducts(getid) {
+function fetchProducts(getId) {
   fetch(`http://localhost:3000/api/products/${getId}`)
     .then((response) => response.json())
     .then((data) => {
