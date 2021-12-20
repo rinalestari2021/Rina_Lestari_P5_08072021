@@ -1,4 +1,7 @@
 // Fetch
+let productId = new URLSearchParams(window.location.search).get("id");
+const addBtn = document.querySelector("#addToCart");
+
 function fetchProducts(getId) {
   fetch(`http://localhost:3000/api/products/${getId}`)
     .then((response) => response.json())
@@ -22,113 +25,122 @@ function fetchProducts(getId) {
       });
     });
 }
-function listen() {
-  //select color
-  /*let colors = document.querySelector("#colors");
-  colors.addEventListener("change", function () {
-    console.log("change ON COLORS");
-    // je dois changer la couleur du canape
-  });*/
 
-  //input quantity
-  // var input = document.querySelector("#quantity")
-  // var min = Number(input.getAttribute("min"))
-  // var max = Number(input.getAttribute("max"))
+addBtn.addEventListener("click", () => {
+  const colorChoice = document.getElementById("colors").value;
+  const quantityChoice = document.querySelector("#quantity").value;
+  let Storage = "http://localhost:3000/api/products/order";
 
-  // if (input !== undefined && input !== null) {
-  //   function quantity(e) {
-  //     var current = Number(input.value)
-  //     var newval = current - itemQuantity
-  //     if (newval < min) {
-  //       newval = min
-  //     } else if (newval > max) {
-  //       newval = max
-  //     }
-  //     input.value = number(newval)
-  //     e.preventDefault()
-  //   }
-  // }
+  //get the key word for storage cart, if the key is empty, declare it empty
+  let check = localStorage.getItem("cart");
+  if (check == null) {
+    cart = [];
+  } else {
+    cart = JSON.parse(localStorage.getItem("cart"));
+  }
 
-  // event submit button
-  var addToCart = [
-    { product_Id, product_price, product_colors, product_quantity },
-  ];
+  //create object product
+  if (colorChoice !== "" && quantityChoice > 0) {
+    let product = {
+      id: productId,
+      color: colorChoice,
+      quantity: quantityChoice,
+    };
 
-  function addToCart(productID) {
-    for (var i = 0; i < products.lenght; i++) {
-      if (products[i].product_Id == productID) {
-        var cartItem = null;
-        for (var k = 0; k < cart.lenght; k++) {
-          if (cart[k].product.product_Id == products[i].product_Id) {
-            cartItem = cart[k];
-            cart[k].Product_Quantity++;
-            break;
-          }
-        }
-        if (cartItem == null) {
-          var cartItem = {
-            product: products[i],
-            product_Quantity: products[i].product_Quantity,
-          };
-          cart.push(cartItem);
-        }
+    //add object product inside the tableau basket then add into locale storage
+    cart.push(product);
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+
+  var obj = {};
+
+  //add to cart
+  obj.addItemToCart = function (productId, colorChoice, quantityChoice) {
+    for (var item in cart) {
+      if (cart[item].productId === product) {
+        cart[item].quantityChoice++;
+        saveCart();
+        return;
       }
-      renderCartTable();
     }
-  }
+    var item = new Item(productId, colorChoice, quantityChoice);
+    cart.push(item);
+    saveCart();
+  };
 
-  buttonElement.addEventListener("click", function (event) {
-    color.textContent = "element cliqué avec une fonction !";
-  });
+  // set quantity from item
+  obj.setQuantityForItem = function (productId, quantityChoice) {
+    for (var i in cart) {
+      if (cart[i].productId === productId) {
+        cart[i].count = count;
+        break;
+      }
+    }
+  };
 
-  buttonElement.addEventListener("click", {
-    handleEvent: function (event) {
-      quantity.textContent = "element cliqué via la propriete handleEvent !";
-    },
-  });
+  //remove items from cart
+  obj.removeItemFromCart = function (productId) {
+    for (var item in cart) {
+      if (cart[item].productId === productId) {
+        cart[item].quantityChoice--;
+        if (cart[item].quantityChoice === 0) {
+          cart.splice(item, 1);
+        }
+        break;
+      }
+    }
+    saveCart();
+  };
 
-  addToCart = document.querySelectorAll("#addToCart");
-  document.querySelectorAll("#addToCart").forEach(function (addToCart) {
-    addToCart.addEventListener("click", function () {
-      addToCart.quantity.add("added");
-      setTimeout(function () {
-        addToCart.quantity.remove("added");
-      }, 2000);
-    });
-  });
+  // clear cart
+  obj.clearcart = function () {
+    cart = [];
+    saveCart();
+  };
 
-  /*function addToCart() {
-    localStorage.setItem("color", "quantity"); //set item
-    document.getElementById("color").innerHTML = localStorage.getItem("color");
-    document.getElementById("quantity").innerHTML =
-      localStorage.getItem("quantity");
-  }
+  //quantity cart
+  obj.totalCount = function () {
+    var totalquantityChoice = 0;
+    for (var item in cart) {
+      totalquantityChoice += cart[item].count;
+    }
+    return totalquantityChoice;
+  };
 
-  var cart = localStorage.getItem("products");*/
+  //total cart
+  obj.totalCart = function () {
+    var totalCart = 0;
+    for (var item in cart) {
+      totalCart += cart[item].price * cart[item].quantityChoice;
+    }
+    return Number(totalCart.toFixed(2));
+  };
 
-  /*
-  const colors = document.querySelector("#colors");
-  const quantity = document.querySelector("#quantity");
-  ;  // use id to get button
+  // list cart
+  obj.listCart = function () {
+    var cartCopy = [];
+    for (i in cart) {
+      item = cart[i];
+      itemCopy = {};
+      for (p in item) {
+        itemCopy[p] = item[p];
+      }
+      itemCopy.total = Number(item.price * item.quantityChoice).toFixed(2);
+      cartCopy.push(itemCopy);
+    }
+    return cartCopy;
+  };
+});
 
-  colors.addEventListener("click", colors =>{ console.log("color select")
-  },{capture : true})
+//add item
 
-  quantity.addEventListener("click", quantity =>{
-    console.log("quantity select")
-  })
+fetchProducts(productId);
 
-  addToCart.addEventListener("click", addtoCart =>{
-    console.log("add 1")
-  })
-
+/*
+function listen() {
   
-
-  button.addEventListener("click", function () {
-    console.log("la quantité est = ", input.value);
-    // ajouter au panier
-    // localStorage (voir sur mdn)
-  });*/
+  // ajouter au panier
+  // localStorage (voir sur mdn)
 }
 
 function main() {
@@ -138,3 +150,4 @@ function main() {
 }
 
 main();
+*/

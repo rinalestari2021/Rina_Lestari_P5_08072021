@@ -84,8 +84,8 @@ const products = [
   },
 ];
 
-for (let i = 0; i < carts.lenght; i++) {
-  carts[i].addEventListener("click", () => {
+for (let i = 0; i < cart.lenght; i++) {
+  cart[i].addEventListener("click", () => {
     addToCart(products[i]);
   });
 }
@@ -94,7 +94,7 @@ function onLoadaddToCart() {
   let productQuantity = localStorage.getItem("addToCart");
 
   if (productQuantity) {
-    document.querySelector("#quantity").textContent = ProductQuantity;
+    document.querySelector("#quantity").textContent = quantityChoice;
   }
 }
 
