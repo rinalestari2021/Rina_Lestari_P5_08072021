@@ -1,135 +1,145 @@
 // chercher le contenu du panier dansle localStorage
-let carts = document.querySelector("#addToCart");
-
-const products = [
-  {
-    colors: ["Blue", "White", "Black"],
-    _id: "107fb5b75607497b96722bda5b504926",
-    name: "Kanap Sinopé",
-    price: 1849,
-    imageUrl: "kanap01.jpeg",
-    description:
-      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    altTxt: "Photo d'un canapé bleu, deux places",
-  },
-  {
-    colors: ["Black/Yellow", "Black/Red"],
-    _id: "415b7cacb65d43b2b5c1ff70f3393ad1",
-    name: "Kanap Cyllène",
-    price: 4499,
-    imageUrl: "kanap02.jpeg",
-    description:
-      "Morbi nec erat aliquam, sagittis urna non, laoreet justo. Etiam sit amet interdum diam, at accumsan lectus.",
-    altTxt: "Photo d'un canapé jaune et noir, quattre places",
-  },
-  {
-    colors: ["Green", "Red", "Orange"],
-    _id: "055743915a544fde83cfdfc904935ee7",
-    name: "Kanap Calycé",
-    price: 3199,
-    imageUrl: "kanap03.jpeg",
-    description:
-      "Pellentesque fermentum arcu venenatis ex sagittis accumsan. Vivamus lacinia fermentum tortor.Mauris imperdiet tellus ante.",
-    altTxt: "Photo d'un canapé d'angle, vert, trois places",
-  },
-  {
-    colors: ["Pink", "White"],
-    _id: "a557292fe5814ea2b15c6ef4bd73ed83",
-    name: "Kanap Autonoé",
-    price: 1499,
-    imageUrl: "kanap04.jpeg",
-    description:
-      "Donec mattis nisl tortor, nec blandit sapien fermentum at. Proin hendrerit efficitur fringilla. Lorem ipsum dolor sit amet.",
-    altTxt: "Photo d'un canapé rose, une à deux place",
-  },
-  {
-    colors: ["Grey", "Purple", "Blue"],
-    _id: "8906dfda133f4c20a9d0e34f18adcf06",
-    name: "Kanap Eurydomé",
-    price: 2249,
-    imageUrl: "kanap05.jpeg",
-    description:
-      "Ut laoreet vulputate neque in commodo. Suspendisse maximus quis erat in sagittis. Donec hendrerit purus at congue aliquam.",
-    altTxt: "Photo d'un canapé gris, trois places",
-  },
-  {
-    colors: ["Grey", "Navy"],
-    _id: "77711f0e466b4ddf953f677d30b0efc9",
-    name: "Kanap Hélicé",
-    price: 999,
-    imageUrl: "kanap06.jpeg",
-    description:
-      "Curabitur vel augue sit amet arcu aliquet interdum. Integer vel quam mi. Morbi nec vehicula mi, sit amet vestibulum.",
-    altTxt: "Photo d'un canapé gris, deux places",
-  },
-  {
-    colors: ["Red", "Silver"],
-    _id: "034707184e8e4eefb46400b5a3774b5f",
-    name: "Kanap Thyoné",
-    price: 1999,
-    imageUrl: "kanap07.jpeg",
-    description:
-      "EMauris imperdiet tellus ante, sit amet pretium turpis molestie eu. Vestibulum et egestas eros. Vestibulum non lacus orci.",
-    altTxt: "Photo d'un canapé rouge, deux places",
-  },
-  {
-    colors: ["Pink", "Brown", "Yellow", "White"],
-    _id: "a6ec5b49bd164d7fbe10f37b6363f9fb",
-    name: "Kanap orthosie",
-    price: 3999,
-    imageUrl: "kanap08.jpeg",
-    description:
-      "Mauris molestie laoreet finibus. Aenean scelerisque convallis lacus at dapibus. Morbi imperdiet enim metus rhoncus.",
-    altTxt: "Photo d'un canapé rose, trois places",
-  },
-];
-
-for (let i = 0; i < cart.lenght; i++) {
-  cart[i].addEventListener("click", () => {
-    addToCart(products[i]);
-  });
+function saveCart(cart) {
+  localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-function onLoadaddToCart() {
-  let productQuantity = localStorage.getItem("addToCart");
-
-  if (productQuantity) {
-    document.querySelector("#quantity").textContent = quantityChoice;
-  }
-}
-
-function addToCart(product) {
-  let productQuantity = localStorage.getItem("addToCart");
-
-  productQuantity = parseInt(productQuantity);
-
-  if (productQuantity) {
-    localStorage.setItem("addToCart", productQuantity + 1);
-    document.querySelector("#quantity").textContent = productQuantity + 1;
+function getCart() {
+  let cart = localStorage.getItem("cart");
+  if (basket == null) {
+    return [];
   } else {
-    localStorage.setItem("addToCart", 1);
-    document.querySelector("#quantity").textContent = 1;
+    return JSON.parse(cart);
   }
-
-  setItems(product);
 }
-function setItems(product) {
-  let cartItems = localStorage.getItems("productInCart");
-  cartItems = JSON.parse(cartItems);
 
-  if (cartItems != null) {
-    cartItems[product.tag].inCart += 1;
+function addCart(product) {
+  let cart = getCart();
+  let foundProduct = cart.find((p) => p.id == product.id);
+  if (foundProduct != undefined) {
+    foundProduct.quantityChoice++;
   } else {
-    product.inCart = 1;
-    cartItems = {
-      [product.tag]: product,
-    };
+    product.quantity = 1;
+    cart.push(product);
   }
-
-  localStorage.setItem("productsInCart", JSON.stringify(cartItems));
+  saveCart(cart);
 }
 
-onLoadaddToCart();
+function removeFromCart(product) {
+  let cart = getCart();
+}
+
+/*
+var obj = {};
+
+  //add to cart
+  obj.addItemToCart = function (productId, colorChoice, quantityChoice) {
+    for (var item in cart) {
+      if (cart[item].productId === product) {
+        cart[item].quantityChoice++;
+        saveCart();
+        return;
+      }
+    }
+    var item = new Item(productId, colorChoice, quantityChoice);
+    cart.push(item);
+    saveCart();
+  };
+
+  // set quantity from item
+  obj.setQuantityForItem = function (productId, quantityChoice) {
+    for (var i in cart) {
+      if (cart[i].productId === productId) {
+        cart[i].count = count;
+        break;
+      }
+    }
+  };
+
+  //remove items from cart
+  obj.removeItemFromCart = function (productId) {
+    for (var item in cart) {
+      if (cart[item].productId === productId) {
+        cart[item].quantityChoice--;
+        if (cart[item].quantityChoice === 0) {
+          cart.splice(item, 1);
+        }
+        break;
+      }
+    }
+    saveCart();
+  };
+
+  // clear cart
+  obj.clearcart = function () {
+    cart = [];
+    saveCart();
+  };
+
+  //quantity cart
+  obj.totalCount = function () {
+    var totalquantityChoice = 0;
+    for (var item in cart) {
+      totalquantityChoice += cart[item].count;
+    }
+    return totalquantityChoice;
+  };
+
+  //total cart
+  obj.totalCart = function () {
+    var totalCart = 0;
+    for (var item in cart) {
+      totalCart += cart[item].price * cart[item].quantityChoice;
+    }
+    return Number(totalCart.toFixed(2));
+  };
+
+  // list cart
+  obj.listCart = function () {
+    var cartCopy = [];
+    for (i in cart) {
+      item = cart[i];
+      itemCopy = {};
+      for (p in item) {
+        itemCopy[p] = item[p];
+      }
+      itemCopy.total = Number(item.price * item.quantityChoice).toFixed(2);
+      cartCopy.push(itemCopy);
+    }
+    return cartCopy;
+  };
+
+  //add item
+  function addItemToCart(productId, colorChoice, quantityChoice) {
+    var item = document.createElement("div");
+    item.classList.add("item");
+    var itemContent = document.getElementsByClassName("item_content")[0];
+    var itemTitle = itemContent.getElementsByClassName(
+      "item__content__titlePrice"
+    );
+    for (var i = 0; i < itemTitle.length; i++) {
+      if (itemTitle[i].innerText == price) {
+        alert("This item already added to the cart");
+        return;
+      }
+    }
+  }
+
+  //click btn addtocart
+  function listen() {
+    document
+      .getElementsByClassName("item__content__addButton")[0]
+      .addEventListener("click", addToCartClicked);
+  }
+
+  function addToCartClicked() {
+    alert("Thank you for your order");
+    var itemContent = document.getElementsByClassName("item_content")[0];
+    while (itemContent.hasChildNodes()) {
+      itemContent.removeChild(itemContent.firstChild);
+    }
+    updateCartTotal();
+  }
+});*/
 
 // envoyé la commande au serveur
 // url de l'api : http://localhost:3000/api/products/order
