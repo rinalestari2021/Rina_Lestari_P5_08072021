@@ -130,9 +130,39 @@ addBtn.addEventListener("click", () => {
     }
     return cartCopy;
   };
-});
 
-//add item
+  //add item
+  function addItemToCart(productId, colorChoice, quantityChoice) {
+    var item = document.createElement("div");
+    item.classList.add("item");
+    var itemContent = document.getElementsByClassName("item_content")[0];
+    var itemTitle = itemContent.getElementsByClassName(
+      "item__content__titlePrice"
+    );
+    for (var i = 0; i < itemTitle.length; i++) {
+      if (itemTitle[i].innerText == price) {
+        alert("This item already added to the cart");
+        return;
+      }
+    }
+  }
+
+  //click btn addtocart
+  function listen() {
+    document
+      .getElementsByClassName("item__content__addButton")[0]
+      .addEventListener("click", addToCartClicked);
+  }
+
+  function addToCartClicked() {
+    alert("Thank you for your order");
+    var itemContent = document.getElementsByClassName("item_content")[0];
+    while (itemContent.hasChildNodes()) {
+      itemContent.removeChild(itemContent.firstChild);
+    }
+    updateCartTotal();
+  }
+});
 
 fetchProducts(productId);
 
