@@ -1,74 +1,72 @@
 // chercher le contenu du panier dans le localStorage
-class cart {
+class Cart {
   constructor() {
-    let cart = localStorage.getItem("cart");
+    let cart = localStorage.getItem("cart")
     if (cart == null) {
-      this.cart = [];
+      this.cart = []
     } else {
-      this.cart = JSON.parse(cart);
+      this.cart = JSON.parse(cart)
     }
   }
   saveCart() {
-    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("cart", JSON.stringify(cart))
   }
 
   addCart(product) {
-    let foundProduct = this.cart.find((p) => p.ID == product.ID);
+    let foundProduct = this.cart.find((p) => p.ID == product.ID)
     if (foundProduct != undefined) {
-      foundProduct.quantityChoice++;
+      foundProduct.quantityChoice++
     } else {
-      product.quantity = 1;
-      cart.push(product);
+      product.quantity = 1
+      cart.push(product)
     }
-    saveCart(this.cart);
+    saveCart(this.cart)
   }
 
   removeFromCart(product) {
-    this.cart = this.cart.filter((p) => p.id != product.ID);
-    this.save();
+    this.cart = this.cart.filter((p) => p.id != product.ID) // pas sur de la majuscule ??
+    this.saveCart()
   }
 
   changeQuantity(product, quantity) {
-    let foundProduct = this.cart.find((p) => p.id == product.id);
+    let foundProduct = this.cart.find((p) => p.id == product.id)
     if (foundProduct != undefined) {
-      foundProduct.quantity += quantity;
+      foundProduct.quantity += quantity
       if (foundProduct.quantity <= 0) {
-        remove(foundProduct);
+        remove(foundProduct)
       } else {
-        this.save();
+        this.save()
       }
     }
   }
 
   getNumberProduct() {
-    let number = 0;
+    let number = 0
     for (let product of this.cart) {
-      number += product.quantity;
+      number += product.quantity
     }
-    return number;
+    return number
   }
 
   getTotalPrice() {
-    let cart = getCart();
-    let total = 0;
+    let total = 0
     for (let product of this.cart) {
-      totalQuantity += product.quantity * product.price;
+      total += product.quantity * product.price
     }
-    return total;
+    return total
   }
 
   displayCart() {
-    let cartItems = localStorage.getItem("cart_items");
-    cartItems = JSON.parse(cartItems);
-    this.cart = document.querySelector("cart_items");
-
-    if (productQuantity && productPrice) {
-      this.cart.innerHTML = "";
-      Object.values(cartItems).map((item) => {
-        this.cart.innerHTML += `
-        <article class="cart__item" data-id=${product.ID} data-color="{product-color}">
+    let cartItems = document.getElementById("cart__items")
+    console.log(cartItems)
+    // if (productQuantity && productPrice) {
+    cartItems.innerHTML = ""
+    this.cart.map((product) => {
+      console.log(product)
+      cartItems.innerHTML += `
+        <article class="cart__item" data-id=${product.ID} data-color="${product.color}">
                 <div class="cart__item__img">
-                  <img src="../images/${product.iamgeUrl} alt="Photographie d'un canapé">
+                  <img src="../images/${product.imageUrl} alt="Photographie d'un canapé">
                 </div>
                 <div class="cart__item__content">
                   <div class="cart__item__content__description">
@@ -86,11 +84,34 @@ class cart {
                     </div>
                   </div>
                 </div>
-        </article>`;
-      });
-    }
+        </article>`
+    })
+    // }
   }
 }
+
+const cart = new Cart()
+cart.displayCart()
+const total = cart.getTotalPrice()
+// gérer les problemes d'affichage
+
+// afficher le total au bon endroit
+// afficher le nombre total de produit
+
+// prevoir la suppression de product.
+
+// prevoir la modofication d'une quantité
+// => la quantité totale change
+// => le prix totla change aussi
+
+// au click sur le button
+// envoyé la commande au serveur
+// url de l'api : http://localhost:3000/api/products/order
+// afficher des erreurs si il y en as
+
+// si la command est validé, rediriger l'utilisateur vers la page confirmation
+
+// afficher le numero de commande dans la page de confirmation
 
 /*
 var obj = {};
@@ -204,8 +225,3 @@ var obj = {};
     updateCartTotal();
   }
 });*/
-
-// envoyé la commande au serveur
-// url de l'api : http://localhost:3000/api/products/order
-
-// si la command est validé, rediriger l'utilisateur vers la page confirmation

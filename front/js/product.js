@@ -1,42 +1,42 @@
 // Fetch
-let productId = new URLSearchParams(window.location.search).get("id");
-const addBtn = document.querySelector("#addToCart");
+let productId = new URLSearchParams(window.location.search).get("id")
+const addBtn = document.querySelector("#addToCart")
 
 function fetchProducts(getId) {
   fetch(`http://localhost:3000/api/products/${getId}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-      const imgNode = document.querySelector("div.item__img");
-      const img = document.createElement("img");
-      img.setAttribute("src", data.imageUrl);
-      img.setAttribute("alt", data.altTxt);
-      imgNode.appendChild(img);
-      document.getElementById(`title`).textContent = data.name;
-      document.getElementById(`price`).textContent = data.price;
-      document.getElementById(`description`).textContent = data.description;
+      console.log(data)
+      const imgNode = document.querySelector("div.item__img")
+      const img = document.createElement("img")
+      img.setAttribute("src", data.imageUrl)
+      img.setAttribute("alt", data.altTxt)
+      imgNode.appendChild(img)
+      document.getElementById(`title`).textContent = data.name
+      document.getElementById(`price`).textContent = data.price
+      document.getElementById(`description`).textContent = data.description
       //create color
-      const colors = document.getElementById("colors");
+      const colors = document.getElementById("colors")
       data.colors.forEach((color) => {
-        var option = document.createElement("option");
-        option.setAttribute("value", color);
-        option.innerText = color;
-        colors.appendChild(option);
-      });
-    });
+        var option = document.createElement("option")
+        option.setAttribute("value", color)
+        option.innerText = color
+        colors.appendChild(option)
+      })
+    })
 }
 
 addBtn.addEventListener("click", () => {
-  const colorChoice = document.getElementById("colors").value;
-  const quantityChoice = document.querySelector("#quantity").value;
-  let cart = [];
+  const colorChoice = document.getElementById("colors").value
+  const quantityChoice = document.querySelector("#quantity").value
+  let cart = []
 
   //get the key word for storage cart, if the key is empty, declare it empty
-  let check = localStorage.getItem("cart");
+  let check = localStorage.getItem("cart")
   if (check == null) {
-    cart = [];
+    cart = []
   } else {
-    cart = JSON.parse(localStorage.getItem("cart"));
+    cart = JSON.parse(localStorage.getItem("cart"))
   }
 
   //create object product
@@ -44,31 +44,33 @@ addBtn.addEventListener("click", () => {
     let product = {
       id: productId,
       color: colorChoice,
-      quantity: quantityChoice,
-    };
+      quantity: quantityChoice
+      // ajouter url de l'image
+      // ajouter le prix
+    }
 
     if (cart.length === 0) {
-      cart.push(product);
+      cart.push(product)
     } else {
-      let check = 0;
+      let check = 0
       for (let i = 0; i < cart.length; i++) {
         if (cart[i].id === product.id && cart[i].color === product.color) {
-          cart[i].quantity = product.quantity;
-          check = 1;
+          cart[i].quantity = product.quantity
+          check = 1
         }
       }
       if (check === 0) {
-        cart.push(product);
+        cart.push(product)
       }
     }
 
     //add object product inside the tableau basket then add into locale storage
-
-    localStorage.setItem("cart", JSON.stringify(cart));
+    console.log({ cart })
+    localStorage.setItem("cart", JSON.stringify(cart))
   }
-});
+})
 
-fetchProducts(productId);
+fetchProducts(productId)
 
 /*function listen() {
   
