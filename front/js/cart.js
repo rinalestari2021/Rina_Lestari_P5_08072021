@@ -68,12 +68,12 @@ class cart {
         this.cart.innerHTML += `
         <article class="cart__item" data-id=${product.ID} data-color="{product-color}">
                 <div class="cart__item__img">
-                  <img src="../images/${product.tag} alt="Photographie d'un canapé">
+                  <img src="../images/${product.iamgeUrl} alt="Photographie d'un canapé">
                 </div>
                 <div class="cart__item__content">
                   <div class="cart__item__content__description">
-                    <h2>${product.title}</h2>
-                    <p>${product.color}</p>
+                    <h2>${product.name}</h2>
+                    <p>${product.colors}</p>
                     <p>${product.price} €</p>
                   </div>
                   <div class="cart__item__content__settings">

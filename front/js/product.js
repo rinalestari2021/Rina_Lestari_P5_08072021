@@ -29,7 +29,7 @@ function fetchProducts(getId) {
 addBtn.addEventListener("click", () => {
   const colorChoice = document.getElementById("colors").value;
   const quantityChoice = document.querySelector("#quantity").value;
-  let cart = "http://localhost:3000/api/products/order";
+  let cart = [];
 
   //get the key word for storage cart, if the key is empty, declare it empty
   let check = localStorage.getItem("cart");
@@ -47,8 +47,23 @@ addBtn.addEventListener("click", () => {
       quantity: quantityChoice,
     };
 
+    if (cart.length === 0) {
+      cart.push(product);
+    } else {
+      let check = 0;
+      for (let i = 0; i < cart.length; i++) {
+        if (cart[i].id === product.id && cart[i].color === product.color) {
+          cart[i].quantity = product.quantity;
+          check = 1;
+        }
+      }
+      if (check === 0) {
+        cart.push(product);
+      }
+    }
+
     //add object product inside the tableau basket then add into locale storage
-    cart.push(product);
+
     localStorage.setItem("cart", JSON.stringify(cart));
   }
 });
