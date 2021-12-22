@@ -1,4 +1,4 @@
-// chercher le contenu du panier dansle localStorage
+// chercher le contenu du panier dans le localStorage
 class cart {
   constructor() {
     let cart = localStorage.getItem("cart");
@@ -13,7 +13,7 @@ class cart {
   }
 
   addCart(product) {
-    let foundProduct = cthis.cart.find((p) => p.id == product.id);
+    let foundProduct = this.cart.find((p) => p.ID == product.ID);
     if (foundProduct != undefined) {
       foundProduct.quantityChoice++;
     } else {
@@ -24,7 +24,7 @@ class cart {
   }
 
   removeFromCart(product) {
-    this.cart = this.cart.filter((p) => p.id != product.id);
+    this.cart = this.cart.filter((p) => p.id != product.ID);
     this.save();
   }
 
@@ -42,7 +42,7 @@ class cart {
 
   getNumberProduct() {
     let number = 0;
-    for (let product of this.basket) {
+    for (let product of this.cart) {
       number += product.quantity;
     }
     return number;
@@ -52,9 +52,43 @@ class cart {
     let cart = getCart();
     let total = 0;
     for (let product of this.cart) {
-      total += product.quantity * product.price;
+      totalQuantity += product.quantity * product.price;
     }
     return total;
+  }
+
+  displayCart() {
+    let cartItems = localStorage.getItem("cart_items");
+    cartItems = JSON.parse(cartItems);
+    this.cart = document.querySelector("cart_items");
+
+    if (productQuantity && productPrice) {
+      this.cart.innerHTML = "";
+      Object.values(cartItems).map((item) => {
+        this.cart.innerHTML += `
+        <article class="cart__item" data-id=${product.ID} data-color="{product-color}">
+                <div class="cart__item__img">
+                  <img src="../images/${product.tag} alt="Photographie d'un canapé">
+                </div>
+                <div class="cart__item__content">
+                  <div class="cart__item__content__description">
+                    <h2>${product.title}</h2>
+                    <p>${product.color}</p>
+                    <p>${product.price} €</p>
+                  </div>
+                  <div class="cart__item__content__settings">
+                    <div class="cart__item__content__settings__quantity">
+                      <p>${product.quantity} : </p>
+                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
+                    </div>
+                    <div class="cart__item__content__settings__delete">
+                      <p class="deleteItem">Supprimer</p>
+                    </div>
+                  </div>
+                </div>
+        </article>`;
+      });
+    }
   }
 }
 
