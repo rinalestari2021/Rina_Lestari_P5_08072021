@@ -1,70 +1,70 @@
 // chercher le contenu du panier dans le localStorage
 class Cart {
   constructor() {
-    let cart = localStorage.getItem("cart")
+    let cart = localStorage.getItem("cart");
     if (cart == null) {
-      this.cart = []
+      this.cart = [];
     } else {
-      this.cart = JSON.parse(cart)
+      this.cart = JSON.parse(cart);
     }
   }
   saveCart() {
-    localStorage.setItem("cart", JSON.stringify(cart))
+    localStorage.setItem("cart", JSON.stringify(cart));
   }
 
   addCart(product) {
-    let foundProduct = this.cart.find((p) => p.ID == product.ID)
+    let foundProduct = this.cart.find((p) => p.id == product.id);
     if (foundProduct != undefined) {
-      foundProduct.quantityChoice++
+      foundProduct.quantityChoice++;
     } else {
-      product.quantity = 1
-      cart.push(product)
+      product.quantity = 1;
+      cart.push(product);
     }
-    saveCart(this.cart)
+    saveCart(cart);
   }
 
   removeFromCart(product) {
-    this.cart = this.cart.filter((p) => p.id != product.ID) // pas sur de la majuscule ??
-    this.saveCart()
+    this.cart = this.cart.filter((p) => p.id != product.id); // pas sur de la majuscule ??
+    this.saveCart();
   }
 
   changeQuantity(product, quantity) {
-    let foundProduct = this.cart.find((p) => p.id == product.id)
+    let foundProduct = this.cart.find((p) => p.id == product.id);
     if (foundProduct != undefined) {
-      foundProduct.quantity += quantity
+      foundProduct.quantity += quantity;
       if (foundProduct.quantity <= 0) {
-        remove(foundProduct)
+        remove(foundProduct);
       } else {
-        this.save()
+        this.save();
       }
     }
   }
 
   getNumberProduct() {
-    let number = 0
+    let number = 0;
     for (let product of this.cart) {
-      number += product.quantity
+      number += product.quantity;
     }
-    return number
+    return number;
   }
 
   getTotalPrice() {
-    let total = 0
+    let total = 0;
     for (let product of this.cart) {
-      total += product.quantity * product.price
+      total += product.quantity * product.price;
     }
-    return total
+    return total;
   }
 
   displayCart() {
-    let cartItems = document.getElementById("cart__items")
-    console.log(cartItems)
+    let cartItems = document.getElementById("cart__items");
+    console.log(cartItems);
     // if (productQuantity && productPrice) {
-    cartItems.innerHTML = ""
+    cartItems.innerHTML = "";
     this.cart.map((product) => {
-      console.log(product)
+      console.log(product);
       cartItems.innerHTML += `
-        <article class="cart__item" data-id=${product.ID} data-color="${product.color}">
+        <article class="cart__item" data-id=${product.Id} data-color="${product.colors}">
                 <div class="cart__item__img">
                   <img src="../images/${product.imageUrl} alt="Photographie d'un canapé">
                 </div>
@@ -84,15 +84,15 @@ class Cart {
                     </div>
                   </div>
                 </div>
-        </article>`
-    })
+        </article>`;
+    });
     // }
   }
 }
 
-const cart = new Cart()
-cart.displayCart()
-const total = cart.getTotalPrice()
+const cart = new Cart();
+cart.displayCart();
+const total = cart.getTotalPrice();
 // gérer les problemes d'affichage
 
 // afficher le total au bon endroit
