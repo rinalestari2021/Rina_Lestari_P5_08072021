@@ -1,4 +1,15 @@
 // chercher le contenu du panier dans le localStorage
+function addCart(product) {
+  let foundProduct = this.cart.find((p) => p.id == product.id);
+  if (foundProduct != undefined) {
+    foundProduct.quantityChoice++;
+  } else {
+    product.quantity = 1;
+    cart.push(product);
+  }
+  saveCart(cart);
+}
+
 class Cart {
   constructor() {
     let cart = localStorage.getItem("cart");
@@ -12,19 +23,8 @@ class Cart {
     localStorage.setItem("cart", JSON.stringify(cart));
   }
 
-  addCart(product) {
-    let foundProduct = this.cart.find((p) => p.id == product.id);
-    if (foundProduct != undefined) {
-      foundProduct.quantityChoice++;
-    } else {
-      product.quantity = 1;
-      cart.push(product);
-    }
-    saveCart(cart);
-  }
-
   removeFromCart(product) {
-    this.cart = this.cart.filter((p) => p.id != product.id); // pas sur de la majuscule ??
+    this.cart = this.cart.filter((p) => p.id != product.id);
     this.saveCart();
   }
 
@@ -37,6 +37,7 @@ class Cart {
       } else {
         this.save();
       }
+      console.log("test");
     }
   }
 
@@ -64,14 +65,14 @@ class Cart {
     this.cart.map((product) => {
       console.log(product);
       cartItems.innerHTML += `
-        <article class="cart__item" data-id=${product.Id} data-color="${product.colors}">
+        <article class="cart__item" data-id=${product.getId} data-color="${product.color}">
                 <div class="cart__item__img">
                   <img src="../images/${product.imageUrl} alt="Photographie d'un canapé">
                 </div>
                 <div class="cart__item__content">
                   <div class="cart__item__content__description">
-                    <h2>${product.name}</h2>
-                    <p>${product.colors}</p>
+                    <h2>${product.title}</h2>
+                    <p>${product.color}</p>
                     <p>${product.price} €</p>
                   </div>
                   <div class="cart__item__content__settings">
@@ -112,116 +113,3 @@ const total = cart.getTotalPrice();
 // si la command est validé, rediriger l'utilisateur vers la page confirmation
 
 // afficher le numero de commande dans la page de confirmation
-
-/*
-var obj = {};
-
-  //add to cart
-  obj.addItemToCart = function (productId, colorChoice, quantityChoice) {
-    for (var item in cart) {
-      if (cart[item].productId === product) {
-        cart[item].quantityChoice++;
-        saveCart();
-        return;
-      }
-    }
-    var item = new Item(productId, colorChoice, quantityChoice);
-    cart.push(item);
-    saveCart();
-  };
-
-  // set quantity from item
-  obj.setQuantityForItem = function (productId, quantityChoice) {
-    for (var i in cart) {
-      if (cart[i].productId === productId) {
-        cart[i].count = count;
-        break;
-      }
-    }
-  };
-
-  //remove items from cart
-  obj.removeItemFromCart = function (productId) {
-    for (var item in cart) {
-      if (cart[item].productId === productId) {
-        cart[item].quantityChoice--;
-        if (cart[item].quantityChoice === 0) {
-          cart.splice(item, 1);
-        }
-        break;
-      }
-    }
-    saveCart();
-  };
-
-  // clear cart
-  obj.clearcart = function () {
-    cart = [];
-    saveCart();
-  };
-
-  //quantity cart
-  obj.totalCount = function () {
-    var totalquantityChoice = 0;
-    for (var item in cart) {
-      totalquantityChoice += cart[item].count;
-    }
-    return totalquantityChoice;
-  };
-
-  //total cart
-  obj.totalCart = function () {
-    var totalCart = 0;
-    for (var item in cart) {
-      totalCart += cart[item].price * cart[item].quantityChoice;
-    }
-    return Number(totalCart.toFixed(2));
-  };
-
-  // list cart
-  obj.listCart = function () {
-    var cartCopy = [];
-    for (i in cart) {
-      item = cart[i];
-      itemCopy = {};
-      for (p in item) {
-        itemCopy[p] = item[p];
-      }
-      itemCopy.total = Number(item.price * item.quantityChoice).toFixed(2);
-      cartCopy.push(itemCopy);
-    }
-    return cartCopy;
-  };
-
-  //add item
-  function addItemToCart(productId, colorChoice, quantityChoice) {
-    var item = document.createElement("div");
-    item.classList.add("item");
-    var itemContent = document.getElementsByClassName("item_content")[0];
-    var itemTitle = itemContent.getElementsByClassName(
-      "item__content__titlePrice"
-    );
-    for (var i = 0; i < itemTitle.length; i++) {
-      if (itemTitle[i].innerText == price) {
-        alert("This item already added to the cart");
-        return;
-      }
-    }
-  }
-
-  //click btn addtocart
-  function listen() {
-    document
-      .getElementsByClassName("item__content__addButton")[0]
-      .addEventListener("click", addToCartClicked);
-  }
-
-  function addToCartClicked() {
-    alert("Thank you for your order");
-    var itemContent = document.getElementsByClassName("item_content")[0];
-    while (itemContent.hasChildNodes()) {
-      itemContent.removeChild(itemContent.firstChild);
-    }
-    updateCartTotal();
-  }
-});*/

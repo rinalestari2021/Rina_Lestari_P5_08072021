@@ -15,6 +15,7 @@ function fetchProducts(getId) {
       document.getElementById(`title`).textContent = data.name;
       document.getElementById(`price`).textContent = data.price;
       document.getElementById(`description`).textContent = data.description;
+
       //create color
       const colors = document.getElementById("colors");
       data.colors.forEach((color) => {
@@ -25,10 +26,15 @@ function fetchProducts(getId) {
       });
     });
 }
+
 // action for event click on color and quantity
 addBtn.addEventListener("click", () => {
   const colorChoice = document.getElementById("colors").value;
   const quantityChoice = document.querySelector("#quantity").value;
+  const priceChoice = document.querySelector("#price").innerText;
+  const imageChoice = document.querySelector(".item__img img").src;
+  const productName = document.querySelector("#title").innerText;
+
   let cart = [];
 
   //get the key word for storage cart, if the key is empty, declare it empty
@@ -43,8 +49,11 @@ addBtn.addEventListener("click", () => {
   if (colorChoice !== "" && quantityChoice > 0) {
     let product = {
       id: productId,
+      title: productName,
       color: colorChoice,
-      quantity: quantityChoice,
+      quantity: Number(quantityChoice),
+      imageUrl: imageChoice,
+      price: Number(priceChoice),
       // ajouter url de l'image
       // ajouter le prix
     };
@@ -58,6 +67,8 @@ addBtn.addEventListener("click", () => {
       let check = 0;
       for (let i = 0; i < cart.length; i++) {
         if (cart[i].id === product.id && cart[i].color === product.color) {
+          cart[i].imageUrl = product.imageUrl;
+          cart[i].price = product.price;
           cart[i].quantity = product.quantity;
           check = 1;
         }
