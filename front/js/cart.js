@@ -44,12 +44,19 @@ class Cart {
   getNumberProduct() {
     let number = 0;
     for (let product of this.cart) {
-      number += product.quantity;
+      Number += product.quantity;
     }
     return number;
   }
 
-  getTotalPrice() {
+  gettotalQuantity() {
+    let totalQuantity = [
+      Number(document.getElementById("quantity").value),
+      Number(document.getElementById("price").value),
+    ];
+  }
+
+  gettotalPrice() {
     let total = 0;
     for (let product of this.cart) {
       total += product.quantity * product.price;
@@ -93,7 +100,7 @@ class Cart {
 
 const cart = new Cart();
 cart.displayCart();
-const total = cart.getTotalPrice();
+const total = cart.gettotalPrice();
 // gérer les problemes d'affichage
 
 // afficher le total au bon endroit
