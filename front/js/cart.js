@@ -1,4 +1,19 @@
-// chercher le contenu du panier dans le localStorage
+//get items from local storage
+function getCard() {
+  let check = localStorage.getItem("cart");
+  if (check == null) {
+    return [];
+  } else {
+    return JSON.parse(check);
+  }
+}
+let cart = getCard();
+
+function saveCart(cart) {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+// add product into cart
 function addCart(product) {
   let foundProduct = this.cart.find((p) => p.id == product.id);
   if (foundProduct != undefined) {
@@ -10,71 +25,54 @@ function addCart(product) {
   saveCart(cart);
 }
 
-class Cart {
-  constructor() {
-    let cart = localStorage.getItem("cart");
-    if (cart == null) {
-      this.cart = [];
+//remove items from cart
+function removeFromCart(product) {
+  cart = cart.filter((p) => p.id != product.id);
+  saveCart(cart);
+}
+
+//change quantity of items
+function changeQuantity(product, quantity) {
+  let foundProduct = this.cart.find((p) => p.id == product.id);
+  if (foundProduct != undefined) {
+    foundProduct.quantity += quantity;
+    if (foundProduct.quantity <= 0) {
+      remove(foundProduct);
     } else {
-      this.cart = JSON.parse(cart);
+      this.save();
     }
   }
-  saveCart() {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }
+}
 
-  removeFromCart(product) {
-    this.cart = this.cart.filter((p) => p.id != product.id);
-    this.saveCart();
+//total of product
+function getNumberProduct() {
+  let number = 0;
+  for (let product of this.cart) {
+    Number += product.quantity;
   }
+  return number;
+}
 
-  changeQuantity(product, quantity) {
-    let foundProduct = this.cart.find((p) => p.id == product.id);
-    if (foundProduct != undefined) {
-      foundProduct.quantity += quantity;
-      if (foundProduct.quantity <= 0) {
-        remove(foundProduct);
-      } else {
-        this.save();
-      }
-      console.log("test");
-    }
+//total of price
+function gettotalPrice(cart) {
+  const totalDiv = document.querySelector("#totalPrice");
+
+  let total = 0;
+  for (let product of cart) {
+    total += product.quantity * product.price;
   }
-
-  getNumberProduct() {
-    let number = 0;
-    for (let product of this.cart) {
-      Number += product.quantity;
-    }
-    return number;
-  }
-
-  gettotalQuantity() {
-    let totalQuantity = [
-      Number(document.getElementById("quantity").value),
-      Number(document.getElementById("price").value),
-    ];
-  }
-
-  gettotalPrice() {
-    let total = 0;
-    for (let product of this.cart) {
-      total += product.quantity * product.price;
-    }
-    return total;
-  }
-
-  displayCart() {
-    let cartItems = document.getElementById("cart__items");
-    console.log(cartItems);
-    // if (productQuantity && productPrice) {
-    cartItems.innerHTML = "";
-    this.cart.map((product) => {
-      console.log(product);
-      cartItems.innerHTML += `
+  totalDiv.innerText = total;
+}
+//to show the result of item selected
+function displayCart() {
+  let cartItems = document.getElementById("cart__items");
+  cartItems.innerHTML = "";
+  cart.forEach((product) => {
+    console.log(product);
+    cartItems.innerHTML += `
         <article class="cart__item" data-id=${product.getId} data-color="${product.color}">
                 <div class="cart__item__img">
-                  <img src="../images/${product.imageUrl} alt="Photographie d'un canapé">
+                  <img src=${product.imageUrl} alt="Photographie d'un canapé">
                 </div>
                 <div class="cart__item__content">
                   <div class="cart__item__content__description">
@@ -93,14 +91,15 @@ class Cart {
                   </div>
                 </div>
         </article>`;
-    });
-    // }
-  }
+  });
+}
+displayCart(cart);
+function getTotalPrice(cart) {
+  getTotalPrice.innerHTML = `<div class="cart__price">
+  <p>Total (<span id="totalQuantity"><${product.quantity}></span> articles) : <span id="totalPrice"><${total}></span> €</p>
+</div>`;
 }
 
-const cart = new Cart();
-cart.displayCart();
-const total = cart.gettotalPrice();
 // gérer les problemes d'affichage
 
 // afficher le total au bon endroit
