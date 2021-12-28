@@ -27,6 +27,16 @@ function addCart(product) {
 
 //remove items from cart
 function removeFromCart(product) {
+  for (var i in cart) {
+    if (cart[i].p.id === product.id) {
+      cart[i].count--;
+
+      if (cart[i].count === 0) {
+        cart.splice(i, 1); //remove item from the array
+      }
+      break;
+    }
+  }
   cart = cart.filter((p) => p.id != product.id);
   saveCart(cart);
 }
@@ -50,7 +60,7 @@ function getNumberProduct() {
   for (let product of this.cart) {
     Number += product.quantity;
   }
-  return number;
+  return Number;
 }
 
 //total of price
@@ -63,6 +73,7 @@ function gettotalPrice(cart) {
   }
   totalDiv.innerText = total;
 }
+
 //to show the result of item selected
 function displayCart() {
   let cartItems = document.getElementById("cart__items");
@@ -94,10 +105,14 @@ function displayCart() {
   });
 }
 displayCart(cart);
-function getTotalPrice(cart) {
-  getTotalPrice.innerHTML = `<div class="cart__price">
-  <p>Total (<span id="totalQuantity"><${product.quantity}></span> articles) : <span id="totalPrice"><${total}></span> €</p>
-</div>`;
+
+//sum total
+function getTotalPrice() {
+  let total = 0;
+  for (let i = 0; i < cart.lenght; i += 1) {
+    total += cart[i].price * cart[i].quantity;
+  }
+  return total.toFixed(2);
 }
 
 // gérer les problemes d'affichage
