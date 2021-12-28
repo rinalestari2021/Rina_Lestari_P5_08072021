@@ -25,16 +25,16 @@ function addCart(product) {
   saveCart(cart);
 }
 
-//remove items from cart
-function removeFromCart(product) {
+//remove items from cart ( isn't working yet)
+function removeFromCart(name, quantity = 0) {
   for (var i in cart) {
     if (cart[i].p.id === product.id) {
-      cart[i].count--;
-
-      if (cart[i].count === 0) {
-        cart.splice(i, 1); //remove item from the array
+      cart[i].quantity -= 1;
+      if (cart[i].quantity === 0) {
+        cart.splice(i, 1);
       }
-      break;
+      showItem();
+      return;
     }
   }
   cart = cart.filter((p) => p.id != product.id);
@@ -106,13 +106,15 @@ function displayCart() {
 }
 displayCart(cart);
 
-//sum total
+//sum total(still not working yet)
 function getTotalPrice() {
   let total = 0;
   for (let i = 0; i < cart.lenght; i += 1) {
     total += cart[i].price * cart[i].quantity;
   }
   return total.toFixed(2);
+
+  /*getTotalPrice.innerHTML = "Total (article): $${getTotal()}";*/
 }
 
 // gérer les problemes d'affichage
