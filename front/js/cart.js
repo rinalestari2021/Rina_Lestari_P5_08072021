@@ -1,87 +1,90 @@
 //get items from local storage
 function getCard() {
-  let check = localStorage.getItem("cart");
+  let check = localStorage.getItem("cart")
   if (check == null) {
-    return [];
+    return []
   } else {
-    return JSON.parse(check);
+    return JSON.parse(check)
   }
 }
-let cart = getCard();
+let cart = getCard()
 
 function saveCart(cart) {
-  localStorage.setItem("cart", JSON.stringify(cart));
+  localStorage.setItem("cart", JSON.stringify(cart))
 }
 
 // add product into cart
 function addCart(product) {
-  let foundProduct = this.cart.find((p) => p.id == product.id);
+  let foundProduct = this.cart.find((p) => p.id == product.id)
   if (foundProduct != undefined) {
-    foundProduct.quantityChoice++;
+    foundProduct.quantityChoice++
   } else {
-    product.quantity = 1;
-    cart.push(product);
+    product.quantity = 1
+    cart.push(product)
   }
-  saveCart(cart);
+  saveCart(cart)
+}
+
+function rmProduct() {
+  console.log("RM PRODUCT")
 }
 
 //remove items from cart ( isn't working yet)
 function removeFromCart(name, quantity = 0) {
-  for (var i in cart) {
+  for (let i in cart) {
     if (cart[i].p.id === product.id) {
-      cart[i].quantity -= 1;
+      cart[i].quantity -= 1
       if (cart[i].quantity === 0) {
-        cart.splice(i, 1);
+        cart.splice(i, 1)
       }
-      showItem();
-      return;
+      // showItem()
+      return
     }
   }
-  cart = cart.filter((p) => p.id != product.id);
-  saveCart(cart);
+  cart = cart.filter((p) => p.id != product.id)
+  saveCart(cart)
 }
 
 //change quantity of items
 function changeQuantity(product, quantity) {
-  let foundProduct = this.cart.find((p) => p.id == product.id);
+  let foundProduct = this.cart.find((p) => p.id == product.id)
   if (foundProduct != undefined) {
-    foundProduct.quantity += quantity;
+    foundProduct.quantity += quantity
     if (foundProduct.quantity <= 0) {
-      remove(foundProduct);
+      remove(foundProduct)
     } else {
-      this.save();
+      this.save()
     }
   }
 }
 
 //total of product
-function getNumberProduct() {
-  let number = 0;
-  for (let product of this.cart) {
-    Number += product.quantity;
+function getNumberProduct(cart) {
+  let number = 0
+  for (let product of cart) {
+    number += product.quantity
   }
-  return Number;
+  return number
 }
 
 //total of price
-function gettotalPrice(cart) {
-  const totalDiv = document.querySelector("#totalPrice");
-
-  let total = 0;
+function settotalPrice(cart) {
+  const totalDiv = document.querySelector("#totalPrice")
+  let total = 0
   for (let product of cart) {
-    total += product.quantity * product.price;
+    total += product.quantity * product.price
   }
-  totalDiv.innerText = total;
+  totalDiv.innerText = total
 }
 
 //to show the result of item selected
 function displayCart() {
-  let cartItems = document.getElementById("cart__items");
-  cartItems.innerHTML = "";
+  let cartItems = document.getElementById("cart__items")
+  cartItems.innerHTML = ""
   cart.forEach((product) => {
-    console.log(product);
+    console.log(product)
     cartItems.innerHTML += `
-        <article class="cart__item" data-id=${product.getId} data-color="${product.color}">
+        <article class="cart__item" data-id=${product.id} data-color="${product.color}">
                 <div class="cart__item__img">
                   <img src=${product.imageUrl} alt="Photographie d'un canapé">
                 </div>
@@ -94,39 +97,34 @@ function displayCart() {
                   <div class="cart__item__content__settings">
                     <div class="cart__item__content__settings__quantity">
                       <p>${product.quantity} : </p>
-                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
+                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantity}">
                     </div>
                     <div class="cart__item__content__settings__delete">
                       <p class="deleteItem">Supprimer</p>
                     </div>
                   </div>
                 </div>
-        </article>`;
-  });
+        </article>`
+  })
 }
-displayCart(cart);
+displayCart(cart)
+settotalPrice(cart)
 
-//sum total(still not working yet)
-function getTotalPrice() {
-  let total = 0;
-  for (let i = 0; i < cart.lenght; i += 1) {
-    total += cart[i].price * cart[i].quantity;
-  }
-  return total.toFixed(2);
+// gérer les problemes d'affichage // DONE // attention au ancienne données !
 
-  /*getTotalPrice.innerHTML = "Total (article): $${getTotal()}";*/
-}
-
-// gérer les problemes d'affichage
-
-// afficher le total au bon endroit
-// afficher le nombre total de produit
+// afficher le total au bon endroit // DONE
+// afficher le nombre total de produit // WIP
 
 // prevoir la suppression de product.
+// Attention: il ya plusieurs boutton supprimer
+// Chaque bouton doit supprimer son produit
+// il va donc falloir ajouter un evenement click sur chaque bouton
+// avant tout essayer de détecter le click (avec un console.log par exemple)
+// petit indice : récuperer la valeur data-id avec dataset en javascipt.
 
-// prevoir la modofication d'une quantité
+// prevoir la modification d'une quantité
 // => la quantité totale change
-// => le prix totla change aussi
+// => le prix total change aussi
 
 // au click sur le button
 // envoyé la commande au serveur
