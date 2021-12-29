@@ -30,7 +30,7 @@ function rmProduct() {
 }
 
 //remove items from cart ( isn't working yet)
-function removeFromCart(name, quantity = 0) {
+function removeFromCart(product = 0) {
   for (let i in cart) {
     if (cart[i].p.id === product.id) {
       cart[i].quantity -= 1;
@@ -45,6 +45,19 @@ function removeFromCart(name, quantity = 0) {
   saveCart(cart);
 }
 
+// accessing element for button delete
+/*const ...  = document.querySelectorAll(".deleteItem");
+
+// adding the event listener by loop
+removeFromCart.forEach((product.id) => {
+  deleteItem.addEventListener("click", (e) => {
+    console.log(
+      "delete item from cart when button supprimer are click"
+    );
+  });
+});*/
+// still confuse adding elements
+
 //change quantity of items
 function changeQuantity(product, quantity) {
   let foundProduct = cart.find((p) => p.id == product.id);
@@ -58,7 +71,7 @@ function changeQuantity(product, quantity) {
   }
 }
 
-//total of product
+//total of quantity product
 function getNumberProduct(cart) {
   let number = 0;
   for (let product of cart) {
@@ -66,6 +79,21 @@ function getNumberProduct(cart) {
   }
   return number;
 }
+
+//accessing element of product quantity
+const productQuantity = document.querySelectorAll(".itemQuantity");
+
+// adding the event listener by loop
+productQuantity.forEach((productQuantity) => {
+  productQuantity.addEventListener("click", (e) => {
+    console.log(
+      "add into cart if quantity change, but id and color are same, save the sum total into the quantity"
+    );
+  });
+});
+//still need to find solution,
+//bcs if i added the same items with different quantity, the code isn't added total of all into quantity
+//instead it replace with the last event happen, 3 items plu 4 items normally b'come 7 items, but my code show result as 4items
 
 //total of price
 function settotalPrice(cart) {
@@ -77,7 +105,7 @@ function settotalPrice(cart) {
   totalDiv.innerText = total;
 }
 
-//to show the result of item selected
+//to show the result of item selected on page web
 function displayCart() {
   let cartItems = document.getElementById("cart__items");
   cartItems.innerHTML = "";
@@ -109,7 +137,7 @@ function displayCart() {
 }
 displayCart(cart);
 settotalPrice(cart);
-getNumberProduct(cart);
+totalProduct = getNumberProduct(cart);
 
 // gérer les problemes d'affichage // DONE // attention au ancienne données !
 

@@ -1,6 +1,6 @@
-// Fetch
+// Fetch to get the product
 let productId = new URLSearchParams(window.location.search).get("id");
-const addBtn = document.querySelector("#addToCart");
+const addBtn = document.querySelector("#addToCart"); //adding button on click event
 
 function fetchProducts(getId) {
   fetch(`http://localhost:3000/api/products/${getId}`)
@@ -27,7 +27,7 @@ function fetchProducts(getId) {
     });
 }
 
-// action for event click on color and quantity
+// action for event on click for elements as it written
 addBtn.addEventListener("click", () => {
   const colorChoice = document.getElementById("colors").value;
   const quantityChoice = document.querySelector("#quantity").value;
@@ -58,7 +58,7 @@ addBtn.addEventListener("click", () => {
 
     //add object product inside the tableau basket then add into locale storage
     //push product inside empty cart,
-    //if the same product already exist in panier, add it but change only in quantity of the product
+    //if the same product already exist in cart, add it but change only in quantity of the product
     if (cart.length === 0) {
       cart.push(product);
     } else {
@@ -81,18 +81,4 @@ addBtn.addEventListener("click", () => {
   }
 });
 
-fetchProducts(productId);
-
-/*function listen() {
-  
-  // ajouter au panier
-  // localStorage (voir sur mdn)
-}
-
-function main() {
-  var getId = new URLSearchParams(window.location.search).get("id");
-  fetchProducts(getId);
-  listen();
-}
-
-main();*/
+fetchProducts(productId); //push product as reply
