@@ -51,14 +51,14 @@ const removeItemBtn = document.querySelectorAll(".deleteItem");
 // adding the event listener by loop
 removeItemBtn.forEach((product) => {
   let deleteItem = document.querySelectorAll(product);
-  deleteItem.addEventListener("click", function () {
+  deleteItem.addEventListener("click", (e) => {
     cart.removeItemBtn(product);
     renderCart();
     renderTotal();
-    console.log("deleteItem");
+    console.log("delete item");
   });
 });
-// still confuse adding elements and is not working yet
+// still confuse adding elements
 
 //change quantity of items
 function changeQuantity(product, quantity) {
@@ -95,7 +95,8 @@ productQuantity.forEach((productQuantity) => {
 });
 //still need to find solution,
 //bcs if i added the same items with different quantity, the code isn't added total of all into quantity
-//instead it replace with the last event happen, 3 items plu 4 items normally b'come 7 items, but my code show result as 4items
+//instead it replace with the last event happen, 3 items plus 4 items normally the result are 7 items,
+//but my code show result as 4items, and when the quantity reduce normally the total price also change
 
 //total of price
 function settotalPrice(cart) {
