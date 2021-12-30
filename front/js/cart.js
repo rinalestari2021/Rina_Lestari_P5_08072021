@@ -46,17 +46,19 @@ function removeFromCart(product = 0) {
 }
 
 // accessing element for button delete
-/*const ...  = document.querySelectorAll(".deleteItem");
+const removeItemBtn = document.querySelectorAll(".deleteItem");
 
 // adding the event listener by loop
-removeFromCart.forEach((product.id) => {
-  deleteItem.addEventListener("click", (e) => {
-    console.log(
-      "delete item from cart when button supprimer are click"
-    );
+removeItemBtn.forEach((product) => {
+  let deleteItem = document.querySelectorAll(product);
+  deleteItem.addEventListener("click", function () {
+    cart.removeItemBtn(product);
+    renderCart();
+    renderTotal();
+    console.log("deleteItem");
   });
-});*/
-// still confuse adding elements
+});
+// still confuse adding elements and is not working yet
 
 //change quantity of items
 function changeQuantity(product, quantity) {
