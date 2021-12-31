@@ -13,7 +13,7 @@ function saveCart(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-// add product into cart
+// add items into cart
 function addCart(product) {
   let foundProduct = this.cart.find((p) => p.id == product.id);
   if (foundProduct != undefined) {
@@ -32,13 +32,12 @@ function rmProduct() {
 //remove items from cart ( isn't working yet)
 function removeFromCart(product = 0) {
   for (let i in cart) {
-    if (cart[i].p.id === product.id) {
+    if (cart[i].product === product.id) {
       cart[i].quantity -= 1;
       if (cart[i].quantity === 0) {
         cart.splice(i, 1);
+        break;
       }
-      // showItem()
-      return;
     }
   }
   cart = cart.filter((p) => p.id != product.id);
@@ -55,7 +54,7 @@ removeItemBtn.forEach((product) => {
     cart.removeItemBtn(product);
     renderCart();
     renderTotal();
-    console.log("delete item");
+    console.log("product");
   });
 });
 // still confuse adding elements
@@ -73,7 +72,7 @@ function changeQuantity(product, quantity) {
   }
 }
 
-//total of quantity product
+//total of quantity items
 function getNumberProduct(cart) {
   let number = 0;
   for (let product of cart) {
@@ -82,7 +81,7 @@ function getNumberProduct(cart) {
   return number;
 }
 
-//accessing element of product quantity
+//accessing element of items quantity
 const productQuantity = document.querySelectorAll(".itemQuantity");
 
 // adding the event listener by loop
@@ -140,6 +139,7 @@ function displayCart() {
 }
 displayCart(cart);
 settotalPrice(cart);
+removeFromCart(cart);
 totalProduct = getNumberProduct(cart);
 
 // gérer les problemes d'affichage // DONE // attention au ancienne données !
