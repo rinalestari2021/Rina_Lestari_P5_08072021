@@ -38,6 +38,8 @@ function removeFromCart(product = 0) {
         cart.splice(i, 1);
         break;
       }
+      //return;    // with return the button suprimer is not working ,
+      //but if with no return the button working on but after resfresh all is gone
     }
   }
   cart = cart.filter((p) => p.id != product.id);
