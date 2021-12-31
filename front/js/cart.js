@@ -29,38 +29,6 @@ function rmProduct() {
   console.log("RM PRODUCT");
 }
 
-//remove items from cart ( isn't working yet)
-function removeFromCart(product = 0) {
-  for (let i in cart) {
-    if (cart[i].product === product.id) {
-      cart[i].quantity -= 1;
-      if (cart[i].quantity === 0) {
-        cart.splice(i, 1);
-        break;
-      }
-      //return;    // with return the button suprimer is not working ,
-      //but if with no return the button working on but after resfresh all is gone
-    }
-  }
-  cart = cart.filter((p) => p.id != product.id);
-  saveCart(cart);
-}
-
-// accessing element for button delete
-const removeItemBtn = document.querySelectorAll(".deleteItem");
-
-// adding the event listener by loop
-removeItemBtn.forEach((product) => {
-  let deleteItem = document.querySelectorAll(product);
-  deleteItem.addEventListener("click", (e) => {
-    cart.removeItemBtn(product);
-    renderCart();
-    renderTotal();
-    console.log("product");
-  });
-});
-// still confuse adding elements
-
 //change quantity of items
 function changeQuantity(product, quantity) {
   let foundProduct = cart.find((p) => p.id == product.id);
@@ -141,8 +109,37 @@ function displayCart() {
 }
 displayCart(cart);
 settotalPrice(cart);
-removeFromCart(cart);
 totalProduct = getNumberProduct(cart);
+
+// accessing element for button delete
+const removeItemBtn = document.querySelectorAll(".deleteItem");
+
+// adding the event listener by loop
+removeItemBtn.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    let cardItem = btn.closest(".cart__item");
+    let cardId = cardItem.dataset.id;
+    let cardColor = cardItem.dataset.color;
+    cardItem.remove();
+    cart = cart.filter((p) => p.id == cardId || p.color !== cardColor);
+    saveCart(cart);
+  });
+});
+
+//remove items from cart
+function removeFromCart(product = 0) {
+  for (let i in cart) {
+    if (cart[i].product === product.id) {
+      cart[i].quantity -= 1;
+      if (cart[i].quantity === 0) {
+        cart.splice(i, 1);
+        break;
+      }
+    }
+  }
+  cart = cart.filter((p) => p.id != product.id);
+  saveCart(cart);
+}
 
 // gérer les problemes d'affichage // DONE // attention au ancienne données !
 
