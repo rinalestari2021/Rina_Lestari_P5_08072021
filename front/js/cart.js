@@ -29,7 +29,7 @@ function rmProduct() {
   console.log("RM PRODUCT");
 }
 
-//change quantity of items
+//change quantity of products
 function changeQuantity(product, quantity) {
   let foundProduct = cart.find((p) => p.id == product.id);
   if (foundProduct != undefined) {
@@ -41,6 +41,23 @@ function changeQuantity(product, quantity) {
     }
   }
 }
+
+//accessing the button for plus and minus
+/*const inputSelect = document.querySelector(".itemQuantity");
+const productArticle = document.querySelector(".cart__item")*/
+
+//adding event by click
+/*let input  {
+  let productArticle = input.closest ('article.cart__item');
+  let quantityChoice = input.value;
+  let productId = productChoice.dataset.id;
+
+  input.addEventListener('cahnge, (e) => {
+    const input = event.target.value;
+    newQuantity = product.quantity;
+    
+    console.log(input);
+  )};*/
 
 //total of quantity items
 function getNumberProduct(cart) {
@@ -126,8 +143,8 @@ removeItemBtn.forEach((btn) => {
   });
 });
 
-//remove items from cart
-function removeFromCart(product = 0) {
+//remove items from cart(problem after refresh item deleted come back)
+/*function removeFromCart(product = 0) {
   for (let i in cart) {
     if (cart[i].product === product.id) {
       cart[i].quantity -= 1;
@@ -139,7 +156,7 @@ function removeFromCart(product = 0) {
   }
   cart = cart.filter((p) => p.id != product.id);
   saveCart(cart);
-}
+}*/
 
 // gérer les problemes d'affichage // DONE // attention au ancienne données !
 
