@@ -43,21 +43,15 @@ function changeQuantity(product, quantity) {
 }
 
 //accessing the button for plus and minus
-/*const inputSelect = document.querySelector(".itemQuantity");
-const productArticle = document.querySelector(".cart__item")*/
+/*const inputSelect = document.querySelectorAll(".itemQuantity");
 
 //adding event by click
-/*let input  {
-  let productArticle = input.closest ('article.cart__item');
-  let quantityChoice = input.value;
-  let productId = productChoice.dataset.id;
+itemQuantity.addEventListener("click", function () {
+  const input = target.value;
+  newQuantity = product.quantity;
 
-  input.addEventListener('cahnge, (e) => {
-    const input = event.target.value;
-    newQuantity = product.quantity;
-    
-    console.log(input);
-  )};*/
+  console.log(input);
+});*/
 
 //total of quantity items
 function getNumberProduct(cart) {
