@@ -1,4 +1,4 @@
-//get items from local storage
+//Get items from local storage
 function getCard() {
   let check = localStorage.getItem("cart");
   if (check == null) {
@@ -13,15 +13,15 @@ function saveCart(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-// add items into cart
+// Add items into cart
 function addCart(product) {
-  let foundProduct = this.cart.find((p) => p.id == product.id);
-  if (foundProduct != undefined) {
-    foundProduct.quantityChoice++;
-  } else {
-    product.quantity = 1;
-    cart.push(product);
+  let foundProduct = this.cart.find((p) => p.id == product.id); //find product inside tableau
+
+  if (foundProduct) {
+    return changeQuantity(product.id, product.quantity);
   }
+  product.quantity = 1;
+  cart.push(product);
   saveCart(cart);
 }
 
@@ -29,32 +29,21 @@ function rmProduct() {
   console.log("RM PRODUCT");
 }
 
-//change quantity of products
+//Change quantity of products
 function changeQuantity(product, quantity) {
-  let foundProduct = cart.find((p) => p.id == product.id);
-  if (foundProduct != undefined) {
+  let foundProduct = cart.find((p) => p.id === product.id);
+  if (foundProduct) {
+    const oldCart = cart.filter((items) => items.id !== id);
     foundProduct.quantity += quantity;
     if (foundProduct.quantity <= 0) {
-      remove(foundProduct);
-    } else {
-      cart.save();
+      return removeFromCart(foundProduct);
     }
+    saveCart([...oldCart, foundProduct]);
   }
 }
 
-//accessing the button for plus and minus
-/*const inputSelect = document.querySelectorAll(".itemQuantity");
-
-//adding event by click
-itemQuantity.addEventListener("click", function () {
-  const input = target.value;
-  newQuantity = product.quantity;
-
-  console.log(input);
-});*/
-
 //total of quantity items
-function getNumberProduct(cart) {
+function getNumberProduct() {
   let number = 0;
   for (let product of cart) {
     number += product.quantity;
@@ -62,12 +51,12 @@ function getNumberProduct(cart) {
   return number;
 }
 
-//accessing element of items quantity
-const productQuantity = document.querySelectorAll(".itemQuantity");
+//Accessing element of items quantity
+const totalQuantity = document.querySelectorAll(".itemQuantity");
 
-// adding the event listener by loop
-productQuantity.forEach((productQuantity) => {
-  productQuantity.addEventListener("click", (e) => {
+// Adding the event listener by loop
+totalQuantity.forEach((totalQuantity) => {
+  totalQuantity.addEventListener("click", (e) => {
     console.log(
       "add into cart if quantity change, but id and color are same, save the sum total into the quantity"
     );
@@ -78,7 +67,7 @@ productQuantity.forEach((productQuantity) => {
 //instead it replace with the last event happen, 3 items plus 4 items normally the result are 7 items,
 //but my code show result as 4items, and when the quantity reduce normally the total price also change
 
-//total of price
+//Total of price
 function settotalPrice(cart) {
   const totalDiv = document.querySelector("#totalPrice");
   let total = 0;
@@ -88,7 +77,7 @@ function settotalPrice(cart) {
   totalDiv.innerText = total;
 }
 
-//to show the result of item selected on page web
+//To show the result of item selected on page web
 function displayCart() {
   let cartItems = document.getElementById("cart__items");
   cartItems.innerHTML = "";
@@ -121,36 +110,22 @@ function displayCart() {
 displayCart(cart);
 settotalPrice(cart);
 totalProduct = getNumberProduct(cart);
+totalPrice = totalQuantity - settotalPrice; // total price after items deleted
 
-// accessing element for button delete
+// Accessing element for button delete
 const removeItemBtn = document.querySelectorAll(".deleteItem");
 
-// adding the event listener by loop
+// Adding the event listener by loop
 removeItemBtn.forEach((btn) => {
   btn.addEventListener("click", () => {
     let cardItem = btn.closest(".cart__item");
     let cardId = cardItem.dataset.id;
     let cardColor = cardItem.dataset.color;
     cardItem.remove();
-    cart = cart.filter((p) => p.id == cardId || p.color !== cardColor);
+    cart = cart.filter((p) => p.id !== cardId || p.color !== cardColor);
     saveCart(cart);
   });
 });
-
-//remove items from cart(problem after refresh item deleted come back)
-/*function removeFromCart(product = 0) {
-  for (let i in cart) {
-    if (cart[i].product === product.id) {
-      cart[i].quantity -= 1;
-      if (cart[i].quantity === 0) {
-        cart.splice(i, 1);
-        break;
-      }
-    }
-  }
-  cart = cart.filter((p) => p.id != product.id);
-  saveCart(cart);
-}*/
 
 // gérer les problemes d'affichage // DONE // attention au ancienne données !
 
