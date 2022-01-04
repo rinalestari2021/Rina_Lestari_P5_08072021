@@ -1,4 +1,4 @@
-//Get items from local storage
+//Get items and cookies from local storage
 function getCard() {
   let check = localStorage.getItem("cart");
   if (check == null) {
@@ -42,6 +42,33 @@ function changeQuantity(product, quantity) {
   }
 }
 
+//Addition and subtraction quantity
+let btn_min = document.querySelectorAll("input min");
+let btn_max = document.querySelectorAll("input max");
+let qty_inputs = document.querySelectorAll("#itemQuantity");
+
+//Evenement on click
+btn_max.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    btn.previousElementSibling.value++;
+  });
+});
+
+btn_min.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    btn.nextElementSibling.value =
+      btn.nextElementSibling.value == 0 ? 0 : btn.nextElementSibling.value - 1;
+  });
+});
+
+// confirmation window when item successfully added into cart(isn't working yet)
+const confirmationWindow = () => {
+  if (window.confirm("Added into cart.")) {
+    window.location.href = "./cart.html";
+  }
+  confirmationWindow();
+};
+
 //total of quantity items
 function getNumberProduct() {
   let number = 0;
@@ -52,14 +79,12 @@ function getNumberProduct() {
 }
 
 //Accessing element of items quantity
-const totalQuantity = document.querySelectorAll(".itemQuantity");
+const totalQuantity = document.querySelectorAll("#itemQuantity");
 
 // Adding the event listener by loop
 totalQuantity.forEach((totalQuantity) => {
   totalQuantity.addEventListener("click", (e) => {
-    console.log(
-      "add into cart if quantity change, but id and color are same, save the sum total into the quantity"
-    );
+    console.log("New Total");
   });
 });
 //still need to find solution,

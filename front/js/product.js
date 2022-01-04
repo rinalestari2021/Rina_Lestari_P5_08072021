@@ -52,8 +52,8 @@ addBtn.addEventListener("click", () => {
       title: productName, //add product name
       color: colorChoice,
       quantity: Number(quantityChoice),
-      imageUrl: imageChoice, // ajouter url de l'image
-      price: Number(priceChoice), // ajouter le prix
+      imageUrl: imageChoice, // add link of image
+      price: Number(priceChoice), // add price
     };
 
     //add object product inside the tableau basket then add into locale storage
