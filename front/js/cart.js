@@ -98,7 +98,7 @@ totalProduct = getNumberProduct(cart);
 const totalQuantities = document.querySelectorAll(".itemQuantity");
 console.log({ totalQuantities });
 
-// Adding the event listener by loop
+// Adding the event listener // still not working yet
 totalQuantities.forEach((totalQuantity) => {
   totalQuantity.addEventListener("change", (e) => {
     console.log("total quantity");
@@ -107,6 +107,30 @@ totalQuantities.forEach((totalQuantity) => {
     // compute totals (price and quantity)
   });
 });
+
+//Changement quantity of items selected
+/*function changeQty() {
+  let modifQty = document.querySelectorAll(".itemQuantity");
+
+  for (let i = 0; i < modifQty.length; i++) {
+    totalQuantities[i].addEventListener("change", (event) => {
+      event.preventDefault();
+
+      //Selection de changement for color and id
+      let qtyChange = check[i].productQuantity;
+      let qtyModifVal = totalQuantities[i].valueAsNumber;
+
+      const resultQty = check.find((el) => el.qtyModifVal !== qtyChange);
+
+      resultQty.getNumberProduct = qtyModifVal;
+      check[i].productQuantity = resultQty.productQuantity;
+
+      localStorage.setItem("product", JSON.stringify(check));
+
+      location.reload();
+    });
+  }
+}*/
 
 //-----------------------------------------------------------------------
 // Accessing element for button delete
@@ -122,10 +146,11 @@ removeItemBtns.forEach((btn) => {
     cart = cart.filter((p) => p.id !== cardId || p.color !== cardColor);
     saveCart(cart);
 
-    location.reload();
+    location.reload(); // refresh page after event and get new total
 
     // compute again total price and total items' number
     // total price after items are deleted
+
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
     const totalPrice = totalQuantity.reduce(reducer, 0);
     console.log(totalPrice);
