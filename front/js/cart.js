@@ -122,7 +122,9 @@ removeItemBtns.forEach((btn) => {
     cart = cart.filter((p) => p.id !== cardId || p.color !== cardColor);
     saveCart(cart);
 
-    // compute again total price and total items' number (is not working yet)
+    location.reload();
+
+    // compute again total price and total items' number
     // total price after items are deleted
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
     const totalPrice = totalQuantity.reduce(reducer, 0);
