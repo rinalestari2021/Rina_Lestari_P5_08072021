@@ -105,32 +105,34 @@ totalQuantities.forEach((totalQuantity) => {
     // change quantity in cart
 
     // compute totals (price and quantity)
+
+    location.reload();
   });
 });
 
-//Changement quantity of items selected
-/*function changeQty() {
+//Changement(modify) quantity of items selected
+function changeQty() {
   let modifQty = document.querySelectorAll(".itemQuantity");
 
-  for (let i = 0; i < modifQty.length; i++) {
-    totalQuantities[i].addEventListener("change", (event) => {
+  for (let k = 0; k < modifQty.length; k++) {
+    totalQuantities[k].addEventListener("change", (event) => {
       event.preventDefault();
 
       //Selection de changement for color and id
-      let qtyChange = check[i].productQuantity;
-      let qtyModifVal = totalQuantities[i].valueAsNumber;
+      let qtyChange = cart[k].productQuantity;
+      let qtyModifVal = totalQuantities[k].valueAsNumber;
 
-      const resultQty = check.find((el) => el.qtyModifVal !== qtyChange);
+      const resultQty = cart.find((el) => el.qtyModifVal !== qtyChange);
 
       resultQty.getNumberProduct = qtyModifVal;
-      check[i].productQuantity = resultQty.productQuantity;
+      cart[i].productQuantity = resultQty.productQuantity;
 
-      localStorage.setItem("product", JSON.stringify(check));
+      localStorage.setItem("cart", JSON.stringify(check));
 
       location.reload();
     });
   }
-}*/
+}
 
 //-----------------------------------------------------------------------
 // Accessing element for button delete
@@ -146,11 +148,10 @@ removeItemBtns.forEach((btn) => {
     cart = cart.filter((p) => p.id !== cardId || p.color !== cardColor);
     saveCart(cart);
 
-    location.reload(); // refresh page after event and get new total
+    alert("Selected item has successfully remove from cart.");
+    location.reload(); // refresh page after event and get new total // total price after items are deleted
 
     // compute again total price and total items' number
-    // total price after items are deleted
-
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
     const totalPrice = totalQuantity.reduce(reducer, 0);
     console.log(totalPrice);

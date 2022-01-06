@@ -76,6 +76,7 @@ addBtn.addEventListener("click", () => {
       }
     }
 
+    alert("Selected item has successfully added into cart.");
     console.log({ cart });
     localStorage.setItem("cart", JSON.stringify(cart));
   }
