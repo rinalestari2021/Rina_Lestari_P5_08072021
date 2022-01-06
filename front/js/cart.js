@@ -102,7 +102,7 @@ console.log({ totalQuantities });
 totalQuantities.forEach((totalQuantity) => {
   totalQuantity.addEventListener("change", (e) => {
     console.log("total quantity");
-    // change quantity in cart
+    // change quantity in cart // deja regler revision sur product.js
 
     // compute totals (price and quantity)
 
@@ -119,7 +119,7 @@ function changeQty() {
       event.preventDefault();
 
       //Selection de changement for color and id
-      let qtyChange = cart[k].productQuantity;
+      let qtyChange = cardItem[k].productQuantity;
       let qtyModifVal = totalQuantities[k].valueAsNumber;
 
       const resultQty = cart.find((el) => el.qtyModifVal !== qtyChange);
@@ -164,6 +164,65 @@ removeItemBtns.forEach((btn) => {
     window.location.href = "./cart.html"
   }
 }*/
+
+//------------------------end of cart------------------------------------------------//
+
+// -------------------------form order-------------------------------------------------------------//
+
+// Select id the button order
+const btnFormOrder = document.getElementById("order");
+
+// Adding addeventlistener
+btnFormOrder.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  //Get the value of formulaire to add into local storage
+  localStorage.setItem("firstName", document.querySelector("#firstName").value);
+  localStorage.setItem("lastName", document.querySelector("#lastName").value);
+  localStorage.setItem("address", document.querySelector("#address").value);
+  localStorage.setItem("city", document.querySelector("#city").value);
+  localStorage.setItem("email", document.querySelector("#email").value);
+
+  //Building array from the local storage
+  let productId = [];
+  for (let i = 0; i < cart.length; i++) {
+    productId.push(cart[i].productId);
+  }
+  console.log(productId);
+
+  const options = {
+    method: "POST",
+    body: JSON.stringify(formOrder),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  };
+
+  //Put the value of form inside object
+  const formOrder = {
+    firstName: localStorage.getItem("firstName"),
+    lastName: localStorage.getItem("lastName"),
+    address: localStorage.getItem("address"),
+    city: localStorage.getItem("city"),
+    email: localStorage.getItem("email"),
+  };
+  console.log(formOrder);
+
+  // url API for form order
+  fetch("http://localhost:3000/api/products/order", options)
+    .then((res) => res.json())
+    .then((response) => response.json())
+    .then((data) => {
+      localStorage.clear();
+      localStorage.setItem("orderId", data.orderId);
+
+      document.location.href = "confirmation.html";
+    })
+    .catch((err) => {
+      alert("Trouble with fetch:" + err.message);
+    });
+});
 
 // gérer les problemes d'affichage // DONE // attention au ancienne données !
 

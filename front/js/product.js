@@ -65,9 +65,7 @@ addBtn.addEventListener("click", () => {
       let check = 0;
       for (let i = 0; i < cart.length; i++) {
         if (cart[i].id === product.id && cart[i].color === product.color) {
-          cart[i].imageUrl = product.imageUrl;
-          cart[i].price = product.price;
-          cart[i].quantity = product.quantity;
+          cart[i].quantity += product.quantity;
           check = 1;
         }
       }
@@ -76,6 +74,7 @@ addBtn.addEventListener("click", () => {
       }
     }
 
+    //alert for item adde into cart
     alert("Selected item has successfully added into cart.");
     console.log({ cart });
     localStorage.setItem("cart", JSON.stringify(cart));
