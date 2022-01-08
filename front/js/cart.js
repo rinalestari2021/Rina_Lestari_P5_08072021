@@ -177,11 +177,22 @@ removeItemBtns.forEach((btn) => {
 // -------------------------form order-------------------------------------------------------------//
 
 // Select id the button order
-const btnFormOrder = document.getElementById("order");
+function formInscription() {
+  let formOrder = document.querySelector(".cart__order");
 
-// Adding addeventlistener
-btnFormOrder.addEventListener("click", (event) => {
-  event.preventDefault();
+  console.log(formOrder.email);
+
+  // Adding addeventlistener
+  formOrder.email.addEventListener("change", () => {
+    validEmail(this);
+  });
+
+  const validEmail = function (inputEmail) {
+    let emailRegExp = new ReExp(
+      "^[a-zA-Z0-9._]+[@]{1}[a_zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"
+    );
+  };
+  formInscription();
 
   //Get the value of formulaire to add into local storage
   localStorage.setItem("firstName", document.querySelector("#firstName").value);
@@ -229,7 +240,7 @@ btnFormOrder.addEventListener("click", (event) => {
     .catch((err) => {
       alert("Trouble with fetch:" + err.message);
     });
-});
+}
 
 // gérer les problemes d'affichage // DONE // attention au ancienne données !
 
