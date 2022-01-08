@@ -98,41 +98,48 @@ totalProduct = getNumberProduct(cart);
 const totalQuantities = document.querySelectorAll(".itemQuantity");
 console.log({ totalQuantities });
 
-// Adding the event listener // still not working yet
+// Adding the event listener
 totalQuantities.forEach((totalQuantity) => {
   totalQuantity.addEventListener("change", (e) => {
     console.log("total quantity");
-    // change quantity in cart // deja regler revision sur product.js
+    // change quantity in cart
+    //Changement(modify) quantity of items selected with add and subtract button//still not working
+    let productQty = document.createElement("input");
+    productQty.className = "itemQuantity";
+    productQty.setAttribute("type", "number");
+    productQty.setAttribute("min", "1");
+    productQty.setAttribute("max", "100");
+    productQty.setAttribute("name", "itemQuantity");
+
+    function modificationQty() {
+      let modifQty = document.querySelectorAll(".itemQuantity");
+      for (let k = 0; k < modifQty.length; k++) {
+        modifQty[k].addEventListener("change", (event) => {
+          event.preventDefault();
+
+          //Selection de changement for qty and id
+          let qtyChange = cart[k].productQuantity;
+          let qtyModifVal = modifQty[k].valueAsNumber;
+
+          const resultFind = cart.find((el) => el.qtyModifVal !== qtyChange);
+
+          resultFind.productQuantity = qtyModifVal;
+          cart[k].productQuantity = resultFind.productQuantity;
+
+          localStorage.setItem("product", JSON.stringify(cart));
+
+          //refresh page
+          location.reload();
+        });
+      }
+      modificationQty();
+    }
 
     // compute totals (price and quantity)
 
     location.reload();
   });
 });
-
-//Changement(modify) quantity of items selected
-function changeQty() {
-  let modifQty = document.querySelectorAll(".itemQuantity");
-
-  for (let k = 0; k < modifQty.length; k++) {
-    totalQuantities[k].addEventListener("change", (event) => {
-      event.preventDefault();
-
-      //Selection de changement for color and id
-      let qtyChange = cardItem[k].productQuantity;
-      let qtyModifVal = totalQuantities[k].valueAsNumber;
-
-      const resultQty = cart.find((el) => el.qtyModifVal !== qtyChange);
-
-      resultQty.getNumberProduct = qtyModifVal;
-      cart[i].productQuantity = resultQty.productQuantity;
-
-      localStorage.setItem("cart", JSON.stringify(check));
-
-      location.reload();
-    });
-  }
-}
 
 //-----------------------------------------------------------------------
 // Accessing element for button delete
@@ -148,7 +155,14 @@ removeItemBtns.forEach((btn) => {
     cart = cart.filter((p) => p.id !== cardId || p.color !== cardColor);
     saveCart(cart);
 
-    alert("Selected item has successfully remove from cart.");
+    //popup window confirmation
+    const popupConf = () => {
+      if (window.confirm(`Article will remove from cart`)) {
+        window.location.href = "cart.html";
+      }
+      window.location.href = "cart.html";
+    };
+    popupConf();
     location.reload(); // refresh page after event and get new total // total price after items are deleted
 
     // compute again total price and total items' number
@@ -158,13 +172,6 @@ removeItemBtns.forEach((btn) => {
   });
 });
 
-// confirmation window when command successfully send
-/*function confirmationWindow() {
-  if (window.confirm("Thank you for your order.")) {
-    window.location.href = "./cart.html"
-  }
-}*/
-
 //------------------------end of cart------------------------------------------------//
 
 // -------------------------form order-------------------------------------------------------------//
@@ -173,8 +180,8 @@ removeItemBtns.forEach((btn) => {
 const btnFormOrder = document.getElementById("order");
 
 // Adding addeventlistener
-btnFormOrder.addEventListener("click", (e) => {
-  e.preventDefault();
+btnFormOrder.addEventListener("click", (event) => {
+  event.preventDefault();
 
   //Get the value of formulaire to add into local storage
   localStorage.setItem("firstName", document.querySelector("#firstName").value);
@@ -192,7 +199,7 @@ btnFormOrder.addEventListener("click", (e) => {
 
   const options = {
     method: "POST",
-    body: JSON.stringify(formOrder),
+    body: JSON.stringify(order),
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -200,7 +207,7 @@ btnFormOrder.addEventListener("click", (e) => {
   };
 
   //Put the value of form inside object
-  const formOrder = {
+  const order = {
     firstName: localStorage.getItem("firstName"),
     lastName: localStorage.getItem("lastName"),
     address: localStorage.getItem("address"),

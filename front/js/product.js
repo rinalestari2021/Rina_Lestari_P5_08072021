@@ -75,7 +75,13 @@ addBtn.addEventListener("click", () => {
     }
 
     //alert for item adde into cart
-    alert("Selected item has successfully added into cart.");
+    const popupConf = () => {
+      if (window.confirm(`Article added into cart`)) {
+        window.location.href = "cart.html";
+      }
+      window.location.href = "cart.html";
+    };
+    popupConf();
     console.log({ cart });
     localStorage.setItem("cart", JSON.stringify(cart));
   }
