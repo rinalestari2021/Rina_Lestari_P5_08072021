@@ -165,7 +165,7 @@ removeItemBtns.forEach((btn) => {
     popupConf();
     location.reload(); // refresh page after event and get new total // total price after items are deleted
 
-    // compute again total price and total items' number
+    // compute again total price and total items' avec la methode .reduce
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
     const totalPrice = totalQuantity.reduce(reducer, 0);
     console.log(totalPrice);
@@ -176,71 +176,97 @@ removeItemBtns.forEach((btn) => {
 
 // -------------------------form order-------------------------------------------------------------//
 
-// Select id the button order
-function formInscription() {
-  let formOrder = document.querySelector(".cart__order");
+//select button to submit the form
+const btnSendOrder = document.querySelector("#order");
+console.log(btnSendOrder);
 
-  console.log(formOrder.email);
+// Adding addeventlistener
+btnSendOrder.addEventListener("click", (e) => {
+  e.preventDefault();
 
-  // Adding addeventlistener
-  formOrder.email.addEventListener("change", () => {
-    validEmail(this);
-  });
-
-  const validEmail = function (inputEmail) {
-    let emailRegExp = new ReExp(
-      "^[a-zA-Z0-9._]+[@]{1}[a_zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"
-    );
+  // Get the value of the form
+  const formValues = {
+    firstName: document.querySelector("#firstName").value,
+    lastName: document.querySelector("#lastName").value,
+    address: document.querySelector("#address").value,
+    city: document.querySelector("#city").value,
+    email: document.querySelector("#email").value,
   };
-  formInscription();
+  console.log("formValues");
 
-  //Get the value of formulaire to add into local storage
-  localStorage.setItem("firstName", document.querySelector("#firstName").value);
-  localStorage.setItem("lastName", document.querySelector("#lastName").value);
-  localStorage.setItem("address", document.querySelector("#address").value);
-  localStorage.setItem("city", document.querySelector("#city").value);
-  localStorage.setItem("email", document.querySelector("#email").value);
+  //Put object formvalues inside local storage
+  localStorage.setItem("formValues", JSON.stringify(formValues)); // change object into string
 
-  //Building array from the local storage
-  let productId = [];
-  for (let i = 0; i < cart.length; i++) {
-    productId.push(cart[i].productId);
+  // Add value of the order and selected products inside un object then send it to serveur
+  const subOrder = {
+    cart,
+    formValues,
+  };
+  console.log("subOrder");
+  console.log(subOrder);
+
+  // ---------Put content inside localstorage into form fields--------
+  //take key from localstorage and put in a variables
+  const dataLocalStorage = localStorage.getItem("formValues");
+
+  //Convert string of the caracter into object javascript
+  const dataLocalStorageObject = JSON.parse(dataLocalStorage);
+
+  //put the values inside localstorage into form field
+  document.querySelector("#firstName").value = dataLocalStorageObject.firstName;
+  document.querySelector("#lastName").value = dataLocalStorageObject.lastName;
+  document.querySelector("#address").value = dataLocalStorageObject.address;
+  document.querySelector("#city").value = dataLocalStorageObject.city;
+  document.querySelector("#email").value = dataLocalStorageObject.email;
+
+  // get the total price of the commande
+  // Select id the button order
+  function formInscription() {
+    let formOrder = document.querySelector(".cart__order");
+
+    console.log(formOrder.email);
+
+    const validEmail = function (inputEmail) {
+      //Creation reg exp for email validation
+      let emailRegExp = new ReExp(
+        "^[a-zA-Z0-9.-_]+[@]{1}[a_zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"
+      );
+
+      let testEmail = emailRegExp.test(inputEmail.value);
+    };
+    formInscription();
+
+    //Building array from the local storage
+    let productId = [];
+    for (let i = 0; i < cart.length; i++) {
+      productId.push(cart[i].productId);
+    }
+    console.log(productId);
+
+    const options = {
+      method: "POST",
+      body: JSON.stringify(order),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    };
+
+    // url API for form order
+    fetch("http://localhost:3000/api/products/order", options)
+      .then((res) => res.json())
+      .then((response) => response.json())
+      .then((data) => {
+        localStorage.clear();
+        localStorage.setItem("orderId", data.orderId);
+
+        document.location.href = "confirmation.html";
+      })
+      .catch((err) => {
+        alert("Trouble with fetch:" + err.message);
+      });
   }
-  console.log(productId);
-
-  const options = {
-    method: "POST",
-    body: JSON.stringify(order),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-  };
-
-  //Put the value of form inside object
-  const order = {
-    firstName: localStorage.getItem("firstName"),
-    lastName: localStorage.getItem("lastName"),
-    address: localStorage.getItem("address"),
-    city: localStorage.getItem("city"),
-    email: localStorage.getItem("email"),
-  };
-  console.log(formOrder);
-
-  // url API for form order
-  fetch("http://localhost:3000/api/products/order", options)
-    .then((res) => res.json())
-    .then((response) => response.json())
-    .then((data) => {
-      localStorage.clear();
-      localStorage.setItem("orderId", data.orderId);
-
-      document.location.href = "confirmation.html";
-    })
-    .catch((err) => {
-      alert("Trouble with fetch:" + err.message);
-    });
-}
+});
 
 // gérer les problemes d'affichage // DONE // attention au ancienne données !
 
