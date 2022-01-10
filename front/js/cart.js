@@ -219,9 +219,82 @@ btnSendOrder.addEventListener("click", (e) => {
   document.querySelector("#city").value = dataLocalStorageObject.city;
   document.querySelector("#email").value = dataLocalStorageObject.email;
 
+  //----- managing the validation form field---------------------
+  function firstnameControl() {
+    const theFirstname = formValues.firstName; //control validation of firstname
+    if (/^[A-Za-z]{3,20}$/.test(theFirstname)) {
+      //first name cant more than 20 alphabet
+      console.log("OK");
+      return true;
+    } else {
+      alert("Number and symbol are not allowed");
+      return false;
+    }
+  }
+
+  function lastnameControl() {
+    const theLastname = formValues.lastName; //control validation of lastname
+    if (/^[A-Za-z]{3,20}$/.test(theLastname)) {
+      console.log("OK");
+      return true;
+    } else {
+      alert("Number and symbol are not allowed");
+      return false;
+    }
+  }
+
+  function addressControl() {
+    const theAddressName = formValues.address; //control validation of address
+    if (/^[A-Za-z0-9]{5,50}$/.test(theAddressName)) {
+      console.log("OK");
+      return true;
+    }
+  }
+
+  function cityControl() {
+    const theCityName = formValues.city; //control validation of city name
+    if (/^[A-Za-z]{3,20}$/.test(theCityName)) {
+      console.log("OK");
+      return true;
+    }
+  }
+
+  function emailControl() {
+    const theEmailAddress = formValues.email; //control validation of email address
+    if (
+      /^[a-zA-Z0-9.-_]+[@]{1}[a_zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/.test(
+        theEmailAddress
+      )
+    ) {
+      console.log("OK");
+      return true;
+    } else {
+      alert("Email is not valid"); // still need to show this alert if email is not rectly write
+      return false;
+    }
+  }
+
+  if (
+    firstnameControl() &&
+    lastnameControl() &&
+    addressControl() &&
+    cityControl() &&
+    emailControl()
+  ) {
+    //Put the object formvalues inside localstorage
+    localStorage.setItem("formValues", JSON.stringify(formValues));
+    localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
+  } else {
+    alert("Thank your for your purchase");
+  }
+
+  //-----------------confirmation order ---------------
+  const responseId = localStorage.getItem("responseId");
+  console.log(`orderId : ${responseId}`);
+
   // get the total price of the commande
   // Select id the button order
-  function formInscription() {
+  /*function formInscription() {
     let formOrder = document.querySelector(".cart__order");
 
     console.log(formOrder.email);
@@ -265,7 +338,7 @@ btnSendOrder.addEventListener("click", (e) => {
       .catch((err) => {
         alert("Trouble with fetch:" + err.message);
       });
-  }
+  }*/
 });
 
 // gérer les problemes d'affichage // DONE // attention au ancienne données !
