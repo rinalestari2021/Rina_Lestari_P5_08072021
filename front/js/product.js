@@ -76,7 +76,7 @@ addBtn.addEventListener("click", () => {
 
     //alert for item adde into cart
     const popupConf = () => {
-      if (window.confirm(`Article added into cart`)) {
+      if (window.confirm(`Ajouter au panier`)) {
         window.location.href = "cart.html";
       }
       window.location.href = "cart.html";

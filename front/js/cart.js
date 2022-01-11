@@ -93,7 +93,7 @@ displayCart(cart);
 settotalPrice(cart);
 totalProduct = getNumberProduct(cart);
 
-//-------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------//
 //Accessing element of items quantity
 const totalQuantities = document.querySelectorAll(".itemQuantity");
 console.log({ totalQuantities });
@@ -101,9 +101,10 @@ console.log({ totalQuantities });
 // Adding the event listener
 totalQuantities.forEach((totalQuantity) => {
   totalQuantity.addEventListener("change", (e) => {
-    console.log("total quantity");
-    // change quantity in cart
-    //Changement(modify) quantity of items selected with add and subtract button//still not working
+    console.log("totalQuantity");
+    //Change quantity in cart with button up and down
+    //Changement(modify) quantity of items selected with add and subtract button
+
     let productQty = document.createElement("input");
     productQty.className = "itemQuantity";
     productQty.setAttribute("type", "number");
@@ -111,37 +112,46 @@ totalQuantities.forEach((totalQuantity) => {
     productQty.setAttribute("max", "100");
     productQty.setAttribute("name", "itemQuantity");
 
-    function modificationQty() {
-      let modifQty = document.querySelectorAll(".itemQuantity");
-      for (let k = 0; k < modifQty.length; k++) {
-        modifQty[k].addEventListener("change", (event) => {
-          event.preventDefault();
+    let modifQty = document.querySelectorAll(".itemQuantity");
+    for (let k = 0; k < modifQty.length; k++) {
+      modifQty[k].addEventListener("change", (event) => {
+        event.preventDefault();
 
-          //Selection de changement for qty and id
-          let qtyChange = cart[k].productQuantity;
-          let qtyModifVal = modifQty[k].valueAsNumber;
+        //Selection de changement for qty and id
+        let qtyChange = cart[k].productQuantity;
+        let qtyModifVal = modifQty[k].valueAsNumber;
 
-          const resultFind = cart.find((el) => el.qtyModifVal !== qtyChange);
+        const resultFind = cart.find((el) => el.qtyModifVal !== qtyChange);
 
-          resultFind.productQuantity = qtyModifVal;
-          cart[k].productQuantity = resultFind.productQuantity;
+        resultFind.productQuantity = qtyModifVal;
+        cart[k].productQuantity = resultFind.productQuantity;
 
-          localStorage.setItem("product", JSON.stringify(cart));
+        localStorage.setItem("modifQty", JSON.stringify(modifQty)); // add into localstorage
 
-          //refresh page
-          location.reload();
-        });
-      }
-      modificationQty();
+        //refresh page
+        location.reload();
+      });
     }
+    modifQty();
 
-    // compute totals (price and quantity)
+    // compute totals (price and quantity)??
+
+    function settotalPrice(cart) {
+      // button +/- working but after refresh qty come back to origin and  total of price is not updated yet
+      const totalDiv = document.querySelector("#totalPrice");
+      let total = 0;
+      for (let product of cart) {
+        total += modifQty * product.price;
+      }
+      totalDiv.innerText = total;
+    }
 
     location.reload();
   });
 });
+settotalPrice(cart);
 
-//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------//
 // Accessing element for button delete
 const removeItemBtns = document.querySelectorAll(".deleteItem");
 
@@ -157,7 +167,7 @@ removeItemBtns.forEach((btn) => {
 
     //popup window confirmation
     const popupConf = () => {
-      if (window.confirm(`Article will remove from cart`)) {
+      if (window.confirm(`Article supprimé du panier`)) {
         window.location.href = "cart.html";
       }
       window.location.href = "cart.html";
@@ -172,7 +182,7 @@ removeItemBtns.forEach((btn) => {
   });
 });
 
-//------------------------end of cart------------------------------------------------//
+//------------------------end of cart--------------------------------------------------------------//
 
 // -------------------------form order-------------------------------------------------------------//
 
@@ -195,7 +205,8 @@ btnSendOrder.addEventListener("click", (e) => {
   console.log("formValues");
 
   //Put object formvalues inside local storage
-  localStorage.setItem("formValues", JSON.stringify(formValues)); // change object into string
+  localStorage.setItem("formValues", JSON.stringify(formValues));
+  // change object into string
 
   // Add value of the order and selected products inside un object then send it to serveur
   const subOrder = {
@@ -205,7 +216,7 @@ btnSendOrder.addEventListener("click", (e) => {
   console.log("subOrder");
   console.log(subOrder);
 
-  // ---------Put content inside localstorage into form fields--------
+  // ---------Put content inside localstorage into form fields------------------------------------/
   //take key from localstorage and put in a variables
   const dataLocalStorage = localStorage.getItem("formValues");
 
@@ -219,7 +230,7 @@ btnSendOrder.addEventListener("click", (e) => {
   document.querySelector("#city").value = dataLocalStorageObject.city;
   document.querySelector("#email").value = dataLocalStorageObject.email;
 
-  //----- managing the validation form field---------------------
+  //----- managing the validation form field----------------------------------------/
   function firstnameControl() {
     const theFirstname = formValues.firstName; //control validation of firstname
     if (/^[A-Za-z]{3,20}$/.test(theFirstname)) {
@@ -227,7 +238,7 @@ btnSendOrder.addEventListener("click", (e) => {
       console.log("OK");
       return true;
     } else {
-      alert("Number and symbol are not allowed");
+      alert("Nombre and symbol ne sont pas valides");
       return false;
     }
   }
@@ -238,7 +249,7 @@ btnSendOrder.addEventListener("click", (e) => {
       console.log("OK");
       return true;
     } else {
-      alert("Number and symbol are not allowed");
+      alert("Nombre and symbol ne sont pas valides");
       return false;
     }
   }
@@ -269,11 +280,11 @@ btnSendOrder.addEventListener("click", (e) => {
       console.log("OK");
       return true;
     } else {
-      alert("Email is not valid"); // still need to show this alert if email is not rectly write
+      alert("Email n'est pas valide"); // still need to show this alert if email is not rectly write
       return false;
     }
   }
-
+  ////control validation form field before send to local storage
   if (
     firstnameControl() &&
     lastnameControl() &&
@@ -284,31 +295,20 @@ btnSendOrder.addEventListener("click", (e) => {
     //Put the object formvalues inside localstorage
     localStorage.setItem("formValues", JSON.stringify(formValues));
     localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
+
+    // Put the values of form and put selected product inside object to send to server
+    const toSend = {
+      cart,
+      formValues,
+    };
+
+    sentToServer(toSend);
   } else {
-    alert("Thank your for your purchase");
+    alert("Merci pour votre achat");
   }
 
-  //-----------------confirmation order ---------------
-  const responseId = localStorage.getItem("responseId");
-  console.log(`orderId : ${responseId}`);
-
-  // get the total price of the commande
   // Select id the button order
-  /*function formInscription() {
-    let formOrder = document.querySelector(".cart__order");
-
-    console.log(formOrder.email);
-
-    const validEmail = function (inputEmail) {
-      //Creation reg exp for email validation
-      let emailRegExp = new ReExp(
-        "^[a-zA-Z0-9.-_]+[@]{1}[a_zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"
-      );
-
-      let testEmail = emailRegExp.test(inputEmail.value);
-    };
-    formInscription();
-
+  function formInscription() {
     //Building array from the local storage
     let productId = [];
     for (let i = 0; i < cart.length; i++) {
@@ -331,15 +331,40 @@ btnSendOrder.addEventListener("click", (e) => {
       .then((response) => response.json())
       .then((data) => {
         localStorage.clear();
-        localStorage.setItem("orderId", data.orderId);
+        localStorage.setItem("orderId", data.Id);
 
         document.location.href = "confirmation.html";
       })
       .catch((err) => {
         alert("Trouble with fetch:" + err.message);
       });
-  }*/
+  }
 });
+//------------------------------confirmation order------------------------
+// cant create and get the order id yet
+// i dont know where i should put this (localStorage.setItem("orderId", JSON.stringify(orderId));)!
+
+const responseId = localStorage.getItem("orderId");
+console.log(`orderId : ${orderId}`);
+
+// get the total price of the commande
+const totalPriceOrder = localStorage.getItem("totalPrice");
+console.log(`totalPriceOrder : ${totalPrice}`);
+
+// structur html for confirmation page
+// select the DOM
+const positionElementOrder = document.querySelector("#orderId");
+
+// is not working
+const structurConfOrder = `
+<div class="confirmation">
+<p>Commande validée ! <br>Votre numéro de commande est : <span id="orderId"><${orderId}</span></p> 
+</div>`;
+
+// return to accueil after confirmation number appears
+if (orderId == null || totalPriceOrder == null) {
+  window.location.href = "index.html";
+}
 
 // gérer les problemes d'affichage // DONE // attention au ancienne données !
 
