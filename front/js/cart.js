@@ -15,7 +15,7 @@ function saveCart(cart) {
 
 // Add items into cart
 function addCart(product) {
-  let foundProduct = this.cart.find((p) => p.id == product.id); //find product inside tableau
+  let foundProduct = cart.find((p) => p.id == product.id); //find product inside tableau
 
   if (foundProduct) {
     return changeQuantity(product.id, product.quantity);
@@ -51,11 +51,15 @@ function getNumberProduct() {
 //Total of price
 function settotalPrice(cart) {
   const totalDiv = document.querySelector("#totalPrice");
+  const quantityDiv = document.querySelector("#totalQuantity");
   let total = 0;
+  let quantity = 0;
   for (let product of cart) {
     total += product.quantity * product.price;
+    quantity += parseInt(product.quantity);
   }
   totalDiv.innerText = total;
+  quantityDiv.innerText = quantity;
 }
 
 //--------------------------------------------------------------------------------------
@@ -95,40 +99,28 @@ totalProduct = getNumberProduct(cart);
 
 //---------------------------------------------------------------------------------------------------//
 //Accessing element of items quantity
-const totalQuantities = document.querySelectorAll(".itemQuantity");
-console.log({ totalQuantities });
-
-// Adding the event listener
-totalQuantities.forEach((input, k) => {
-  input.addEventListener("change", (e) => {
-    //Change quantity in cart with button up and down
-    //Changement(modify) quantity of items selected with add and subtract button
-
-    //Selection de changement for qty and id
-    console.log("====================> ", cart[k]);
-
-    const quantity = input.value;
-    console.log("quantity");
-    console.log(quantity);
-    totalPrice = settotalPrice * quantity;
-
-    /*cart[k].quantity * totalQuantities !== totalPrice;*/
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // modifier dans le panier la quantité avec la nouvelle valeur
-    // enregistrer le panier dans le localStorage
-
-    // afficher les nouvelle valeur (utiliser displayCard) // +
-    // recalculer les totaux (price and quantity)
-
-    // ou // -
-    // window.location.reload()
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    saveCart(cart);
-    settotalPrice(cart);
-    displayCart(cart);
+function listeningCount() {
+  let totalQuantities = document.querySelectorAll("input.itemQuantity");
+  // Adding the event listener
+  totalQuantities.forEach(function (input) {
+    input.addEventListener("input", function (e) {
+      let quantity = e.target.value; // recupere la valeur de l'input
+      let cardItem = input.closest(".cart__item"); // chercher dans le doms
+      let cardId = cardItem.dataset.id; //recupere l'id d" l'element modifie,
+      let cardColor = cardItem.dataset.color; // recupere le color
+      let cart = getCard(); //recupere localstorage
+      let item = cart.find(
+        // trouve l'element dans localstorage grace a son id et sa couleur
+        (element) => element.id === cardId && element.color === cardColor
+      );
+      item.quantity = quantity; // modifie quantite l'element avec celle de l'input
+      addCart(item); // actualiser la cart avec la nouvell element modified
+      saveCart(cart); // actualiser local storage
+      settotalPrice(cart); // actualisation prix et quantite
+    });
   });
-});
+}
+listeningCount();
 
 //-----------------------------------------------------------------------------------------//
 // Accessing element for button delete
@@ -141,102 +133,74 @@ removeItemBtns.forEach((btn) => {
     let cardItem = btn.closest(".cart__item");
     let cardId = cardItem.dataset.id;
     let cardColor = cardItem.dataset.color;
-    cardItem.remove();
+
     cart = cart.filter((p) => p.id !== cardId || p.color !== cardColor);
     saveCart(cart);
     settotalPrice(cart);
-    displayCart(cart);
+    cardItem.remove();
   });
 });
 
 //------------------------end of cart--------------------------------------------------------------//
 
-// -------------------------form order-------------------------------------------------------------//
+//------------------------------
 
-//select button to submit the form
 const btnSendOrder = document.querySelector("#order");
 console.log(btnSendOrder);
 
 // Adding addeventlistener
-btnSendOrder.form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  console.log("===============================");
-  // Get the value of the form
-  const formValues = {
-    firstName: document.querySelector("#firstName").value,
-    lastName: document.querySelector("#lastName").value,
-    address: document.querySelector("#address").value,
-    city: document.querySelector("#city").value,
-    email: document.querySelector("#email").value,
-  };
-  console.log("formValues", formValues);
-
-  //Put object formvalues inside local storage
-  localStorage.setItem("formValues", JSON.stringify(formValues));
-  // change object into string
-
-  // Add value of the order and selected products inside un object then send it to serveur
-  const subOrder = {
-    cart,
-    formValues,
-  };
-  console.log("subOrder");
-  console.log(subOrder);
-
-  // ---------Put content inside localstorage into form fields------------------------------------/
-  //take key from localstorage and put in a variables
-  const dataLocalStorage = localStorage.getItem("formValues");
-
-  //Convert string of the caracter into object javascript
-  const dataLocalStorageObject = JSON.parse(dataLocalStorage);
+btnSendOrder.addEventListener("click", function (e) {
+  e.preventDefault(); // prevent d'actualiser
 
   //----- managing the validation form field----------------------------------------/
   function firstnameControl() {
-    const theFirstname = formValues.firstName; //control validation of firstname
+    const theFirstname = document.querySelector("#firstName").value; //control validation of firstname
     if (/^[A-Za-z]{3,20}$/.test(theFirstname)) {
       //first name cant more than 20 alphabet
       console.log("OK");
       return true;
     } else {
-      alert("Nombre and symbol ne sont pas valides");
+      alert("Prenom non valide");
       return false;
     }
   }
 
   function lastnameControl() {
-    const theLastname = formValues.lastName; //control validation of lastname
+    const theLastname = document.querySelector("#lastName").value; //control validation of lastname
     if (/^[A-Za-z]{3,20}$/.test(theLastname)) {
       console.log("OK");
       return true;
     } else {
-      alert("Nombre and symbol ne sont pas valides");
+      alert("Nom non valide");
       return false;
     }
   }
 
   function addressControl() {
-    const theAddressName = formValues.address; //control validation of address
-    if (/^[A-Za-z0-9]{5,50}$/.test(theAddressName)) {
+    const theAddressName = document.querySelector("#address").value; //control validation of address
+    if (/^[A-Za-z0-9\s]{5,50}$/.test(theAddressName)) {
       console.log("OK");
       return true;
+    } else {
+      alert("Address non valide");
+      return false;
     }
   }
 
   function cityControl() {
-    const theCityName = formValues.city; //control validation of city name
+    const theCityName = document.querySelector("#city").value; //control validation of city name
     if (/^[A-Za-z]{3,20}$/.test(theCityName)) {
       console.log("OK");
       return true;
+    } else {
+      alert("City non valide");
+      return false;
     }
   }
 
   function emailControl() {
-    const theEmailAddress = formValues.email; //control validation of email address
-    if (
-      /^[a-zA-Z0-9.-_]+[@]{1}[a_zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/.test(
-        theEmailAddress
-      )
-    ) {
+    const theEmailAddress = document.querySelector("#email").value; //control validation of email address
+    if (/^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/.test(theEmailAddress)) {
       console.log("OK");
       return true;
     } else {
@@ -246,57 +210,49 @@ btnSendOrder.form.addEventListener("submit", (e) => {
   }
   ////control validation form field before send to local storage
   if (
-    true
-    // firstnameControl() &&
-    // lastnameControl() &&
-    // addressControl() &&
-    // cityControl() &&
-    // emailControl()
+    firstnameControl() &&
+    lastnameControl() &&
+    addressControl() &&
+    cityControl() &&
+    emailControl()
   ) {
-    //Put the object formvalues inside localstorage
-    localStorage.setItem("formValues", JSON.stringify(formValues));
-    localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
-
-    // Put the values of form and put selected product inside object to send to server
-    const toSend = {
-      cart,
-      formValues,
+    // creation contact
+    const contact = {
+      firstName: document.querySelector("#firstName").value,
+      lastName: document.querySelector("#lastName").value,
+      address: document.querySelector("#address").value,
+      city: document.querySelector("#city").value,
+      email: document.querySelector("#email").value,
     };
-  } else {
-    alert("Merci pour votre achat");
-  }
-
-  // Select id the button order
-  function formInscription() {
-    //Building array from the local storage
-    let productId = [];
+    let productId = []; // cree
+    let cart = getCard();
     for (let i = 0; i < cart.length; i++) {
-      productId.push(cart[i].productId);
+      productId.push(cart[i].id);
     }
-    console.log(productId);
-
+    const toSend = {
+      products: productId,
+      contact: contact,
+    };
     const options = {
       method: "POST",
-      body: JSON.stringify(order),
+      body: JSON.stringify(toSend),
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
     };
-
-    // url API for form order
-    fetch("http://localhost:3000/api/products/order", options)
+    fetch("http://localhost:3000/api/products/order", options) // make an http request
       .then((res) => res.json())
-      .then((response) => response.json())
-      .then((data) => {
+      .then(function (data) {
         localStorage.clear();
-        localStorage.setItem("orderId", data);
-
-        document.location.href = "confirmation.html";
+        localStorage.setItem("orderId", data.orderId); // registre order id
+        window.location.href = "confirmation.html";
       })
-      .catch((err) => {
-        alert("Trouble with fetch:" + err.message);
+      .catch(function (err) {
+        alert("Il y a eu un problème avec l'opération fetch: " + err.message);
       });
+  } else {
+    alert("Veuillez bien remplir le formulaire");
   }
 });
 

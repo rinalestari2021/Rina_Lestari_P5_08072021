@@ -39,6 +39,7 @@ addBtn.addEventListener("click", () => {
 
   //get the key word for storage cart, if the key is empty, declare it empty
   let check = localStorage.getItem("cart");
+  console.log(check);
   if (check == null) {
     cart = [];
   } else {
