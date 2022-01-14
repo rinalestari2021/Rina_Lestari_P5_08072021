@@ -1,4 +1,4 @@
-// Fetch
+// Fetch get the API
 fetch("http://localhost:3000/api/products").then((response) => {
   console.log(response);
   response.json().then((products) => {

@@ -1,4 +1,4 @@
-// Fetch to get the product
+// Fetch  API to get the product
 let productId = new URLSearchParams(window.location.search).get("id");
 const addBtn = document.querySelector("#addToCart"); //adding button on click event
 

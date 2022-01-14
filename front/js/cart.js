@@ -10,7 +10,7 @@ function getCard() {
 let cart = getCard();
 
 function saveCart(cart) {
-  localStorage.setItem("cart", JSON.stringify(cart));
+  localStorage.setItem("cart", JSON.stringify(cart)); // set items inside localstorage
 }
 
 // Add items into cart
@@ -25,7 +25,7 @@ function addCart(product) {
   saveCart(cart);
 }
 
-//----------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------//
 //Change quantity of products
 function changeQuantity(product, quantity) {
   let foundProduct = cart.find((p) => p.id === product.id);
@@ -50,7 +50,7 @@ function getNumberProduct() {
 
 //Total of price
 function settotalPrice(cart) {
-  const totalDiv = document.querySelector("#totalPrice");
+  const totalDiv = document.querySelector("#totalPrice"); // select element from DOM
   const quantityDiv = document.querySelector("#totalQuantity");
   let total = 0;
   let quantity = 0;
@@ -104,32 +104,31 @@ function listeningCount() {
   // Adding the event listener
   totalQuantities.forEach(function (input) {
     input.addEventListener("input", function (e) {
-      let quantity = e.target.value; // recupere la valeur de l'input
-      let cardItem = input.closest(".cart__item"); // chercher dans le doms
-      let cardId = cardItem.dataset.id; //recupere l'id d" l'element modifie,
-      let cardColor = cardItem.dataset.color; // recupere le color
-      let cart = getCard(); //recupere localstorage
+      let quantity = e.target.value; // get the value of the input
+      let cardItem = input.closest(".cart__item"); // search inside the DOM
+      let cardId = cardItem.dataset.id; //get the id and the modified element
+      let cardColor = cardItem.dataset.color; // get the color
+      let cart = getCard(); //get the localstorage
       let item = cart.find(
-        // trouve l'element dans localstorage grace a son id et sa couleur
-        (element) => element.id === cardId && element.color === cardColor
+        // find the element inside localstorage thanks to the id and the color
+        (element) => element.id === cardId && element.color === cardColor // element id equal cardi  and element color equel cardcolor
       );
-      item.quantity = quantity; // modifie quantite l'element avec celle de l'input
-      addCart(item); // actualiser la cart avec la nouvell element modified
-      saveCart(cart); // actualiser local storage
-      settotalPrice(cart); // actualisation prix et quantite
+      item.quantity = quantity; // modify the quantity o the element with the quantity change from the input
+      addCart(item); // refresh the cart with the new element that has been modified
+      saveCart(cart); // updating local storage
+      settotalPrice(cart); // actualisation price and the quantity
     });
   });
 }
 listeningCount();
 
 //-----------------------------------------------------------------------------------------//
-// Accessing element for button delete
+// Accessing element for button delete inside DOM
 const removeItemBtns = document.querySelectorAll(".deleteItem");
 
 // Adding the event listener
 removeItemBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
-    // if (window.confirm(`Article supprimé du panier`)) {
     let cardItem = btn.closest(".cart__item");
     let cardId = cardItem.dataset.id;
     let cardColor = cardItem.dataset.color;
@@ -143,14 +142,15 @@ removeItemBtns.forEach((btn) => {
 
 //------------------------end of cart--------------------------------------------------------------//
 
-//------------------------------
+//------------------------------ form field for order---------------------------------------------//
 
+//select button id inside DOM for sending command
 const btnSendOrder = document.querySelector("#order");
 console.log(btnSendOrder);
 
 // Adding addeventlistener
 btnSendOrder.addEventListener("click", function (e) {
-  e.preventDefault(); // prevent d'actualiser
+  e.preventDefault(); // to stop the system refresh automatically
 
   //----- managing the validation form field----------------------------------------/
   function firstnameControl() {
@@ -164,7 +164,6 @@ btnSendOrder.addEventListener("click", function (e) {
       return false;
     }
   }
-
   function lastnameControl() {
     const theLastname = document.querySelector("#lastName").value; //control validation of lastname
     if (/^[A-Za-z]{3,20}$/.test(theLastname)) {
@@ -175,7 +174,6 @@ btnSendOrder.addEventListener("click", function (e) {
       return false;
     }
   }
-
   function addressControl() {
     const theAddressName = document.querySelector("#address").value; //control validation of address
     if (/^[A-Za-z0-9\s]{5,50}$/.test(theAddressName)) {
@@ -186,7 +184,6 @@ btnSendOrder.addEventListener("click", function (e) {
       return false;
     }
   }
-
   function cityControl() {
     const theCityName = document.querySelector("#city").value; //control validation of city name
     if (/^[A-Za-z]{3,20}$/.test(theCityName)) {
@@ -197,18 +194,18 @@ btnSendOrder.addEventListener("click", function (e) {
       return false;
     }
   }
-
   function emailControl() {
     const theEmailAddress = document.querySelector("#email").value; //control validation of email address
     if (/^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/.test(theEmailAddress)) {
       console.log("OK");
       return true;
     } else {
-      alert("Email n'est pas valide"); // still need to show this alert if email is not rectly write
+      alert("Email n'est pas valide"); // alert if the email dont write corectly
       return false;
     }
   }
-  ////control validation form field before send to local storage
+
+  //control validation form field before send to local storage
   if (
     firstnameControl() &&
     lastnameControl() &&
@@ -216,7 +213,7 @@ btnSendOrder.addEventListener("click", function (e) {
     cityControl() &&
     emailControl()
   ) {
-    // creation contact
+    // creation contact for form field
     const contact = {
       firstName: document.querySelector("#firstName").value,
       lastName: document.querySelector("#lastName").value,
@@ -224,16 +221,18 @@ btnSendOrder.addEventListener("click", function (e) {
       city: document.querySelector("#city").value,
       email: document.querySelector("#email").value,
     };
-    let productId = []; // cree
-    let cart = getCard();
+    let productId = []; // create variable product id
+    let cart = getCard(); // the empty cart equal getcard (take from local storage)
     for (let i = 0; i < cart.length; i++) {
       productId.push(cart[i].id);
     }
     const toSend = {
+      // create variable to send with 2 object product and contact info
       products: productId,
       contact: contact,
     };
     const options = {
+      //request  access to json
       method: "POST",
       body: JSON.stringify(toSend),
       headers: {
@@ -245,21 +244,16 @@ btnSendOrder.addEventListener("click", function (e) {
       .then((res) => res.json())
       .then(function (data) {
         localStorage.clear();
-        localStorage.setItem("orderId", data.orderId); // registre order id
+        localStorage.setItem("orderId", data.orderId); // registrer order id
         window.location.href = "confirmation.html";
       })
       .catch(function (err) {
         alert("Il y a eu un problème avec l'opération fetch: " + err.message);
       });
   } else {
-    alert("Veuillez bien remplir le formulaire");
+    alert("Veuillez bien remplir le formulaire"); // if form field not fill corectly the is error message
   }
 });
-
-// return to accueil after confirmation number appears
-// if (orderId == null || totalPriceOrder == null) {
-//   window.location.href = "index.html"
-// }
 
 // gérer les problemes d'affichage // DONE // attention au ancienne données !
 
