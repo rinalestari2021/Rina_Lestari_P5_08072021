@@ -16,8 +16,8 @@ console when the server starts, e.g. `Listening on port 3001`.
 
 ### Memo
 
-Meme canapé mais différente couleur (meme ligne ou un ligne par couleur ?)
-Commande d'un canapé deja dans le panier, est-ce qu'on additionne
-ou surcharge la commande
-
-si la command est validé, rediriger l'utilisateur vers la page confirmation ?
+- afficher les messages d'erreur dans le HTML/DOM (pas d'alert)
+- interdire l'envoi de la commande si le panier est vide
+- l'orderId doit etre envoye a la page de confirmation par l'url (localstoragee interdit)
+- commenter les fonctions
+- remplir excel
