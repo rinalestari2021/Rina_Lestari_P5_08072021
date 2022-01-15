@@ -240,7 +240,14 @@ btnSendOrder.addEventListener("click", function (e) {
     ? formfieldTextEmpty("emailErrorMsg")
     : formfieldTextFill("emailErrorMsg");
 
+  // check if cart is empty or not before valid the commands
   function cartControl() {
+    if (cart == null) {
+      return false;
+    } else {
+      return true;
+    }
+
     // retourner false si le cart du localStorage est vide (==null)
     // sinon retourner true
   }
@@ -251,8 +258,8 @@ btnSendOrder.addEventListener("click", function (e) {
     lastnameControl() &&
     addressControl() &&
     cityControl() &&
-    emailControl()
-    // cartControl()
+    emailControl() &&
+    cartControl()
   ) {
     // creation contact for form field
     const contact = {
@@ -287,12 +294,13 @@ btnSendOrder.addEventListener("click", function (e) {
         localStorage.clear();
         localStorage.setItem("orderId", data.orderId); // registrer order id // INTERDIT !!!!!!!!!!!!!!!!!!!!!!!!
         window.location.href = "confirmation.html"; // transferer orderId avec url
+        //let orderId = new URLSearchParams(window.location.search).post("id")
       })
       .catch(function (err) {
         alert("Il y a eu un problème avec l'opération fetch: " + err.message);
       });
   } else {
-    alert("Veuillez bien remplir le formulaire"); // if form field not fill corectly the is error message
+    alert("Veuillez remplir bien le formulaire / ajouter un article"); // if form field not fill corectly the is error message
   }
 });
 
