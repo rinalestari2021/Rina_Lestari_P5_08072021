@@ -1,4 +1,4 @@
-//------------------------------confirmation order------------------------
+//------------------------------confirmation order------------------------/
 
 // get the element response from local storage
 const responseId = localStorage.getItem("orderId");

@@ -1,6 +1,18 @@
-// Fetch  API to get the product
+/**
+ * Get id of the product with method url search params
+ * const addBtn; Get MDN for button add to cart
+ * Function fetch product to get the product id
+ * Select DOM and set attribut url image and alttxt for each images
+ * Create appendchild
+ * Get the element of DOM with using document.getElementById
+ * const colors;Create color la boucle for each
+ * function addBtn; action for event on click for elements as color, qty, price, tittle, img
+ * let cart = []; Create event on click then put inside empty cart cart[]
+ * let check = localStorage.getItem("cart"); Check to verify if the cart is empty if yess put the items inside cart
+ */
+
 let productId = new URLSearchParams(window.location.search).get("id");
-const addBtn = document.querySelector("#addToCart"); //adding button on click event
+const addBtn = document.querySelector("#addToCart");
 
 function fetchProducts(getId) {
   fetch(`http://localhost:3000/api/products/${getId}`)
@@ -16,7 +28,6 @@ function fetchProducts(getId) {
       document.getElementById(`price`).textContent = data.price;
       document.getElementById(`description`).textContent = data.description;
 
-      //create color
       const colors = document.getElementById("colors");
       data.colors.forEach((color) => {
         var option = document.createElement("option");
@@ -26,8 +37,6 @@ function fetchProducts(getId) {
       });
     });
 }
-
-// action for event on click for elements as it written
 addBtn.addEventListener("click", () => {
   const colorChoice = document.getElementById("colors").value;
   const quantityChoice = document.querySelector("#quantity").value;
@@ -37,7 +46,6 @@ addBtn.addEventListener("click", () => {
 
   let cart = [];
 
-  //get the key word for storage cart, if the key is empty, declare it empty
   let check = localStorage.getItem("cart");
   console.log(check);
   if (check == null) {
@@ -46,20 +54,16 @@ addBtn.addEventListener("click", () => {
     cart = JSON.parse(localStorage.getItem("cart"));
   }
 
-  //create object product
   if (colorChoice !== "" && quantityChoice > 0) {
     let product = {
       id: productId,
-      title: productName, //add product name
+      title: productName,
       color: colorChoice,
       quantity: Number(quantityChoice),
-      imageUrl: imageChoice, // add link of image
-      price: Number(priceChoice), // add price
+      imageUrl: imageChoice,
+      price: Number(priceChoice),
     };
 
-    //add object product inside the tableau basket then add into locale storage
-    //push product inside empty cart,
-    //if the same product already exist in cart, add it but change only in quantity of the product
     if (cart.length === 0) {
       cart.push(product);
     } else {
@@ -74,8 +78,6 @@ addBtn.addEventListener("click", () => {
         cart.push(product);
       }
     }
-
-    //alert for item adde into cart
     const popupConf = () => {
       if (window.confirm(`Ajouter au panier`)) {
         window.location.href = "cart.html";
@@ -88,4 +90,15 @@ addBtn.addEventListener("click", () => {
   }
 });
 
-fetchProducts(productId); //push product as reply
+fetchProducts(productId);
+
+/**
+ * if (colorChoice !== "" && quantityChoice >;create object product if client choose color 
+    and quantity then the other list inside the product
+ * if (cart.length === 0) {
+      cart.push(product);....; add object product inside the tableau basket then add into locale storage
+    //push product inside empty cart,
+    //if the same product already exist in cart, add it but change only in quantity of the product
+ * const popup to create window confirm
+ * function appeler productId
+ */
