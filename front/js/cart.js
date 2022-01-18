@@ -3,20 +3,19 @@
  * Call the function get card to be execute
  */
 function getCard() {
-  let check = localStorage.getItem("cart");
-  console.log({ check });
+  let check = localStorage.getItem("cart")
+  console.log({ check })
   if (check == null) {
-    return [];
+    return []
   } else {
-    return JSON.parse(check);
+    return JSON.parse(check)
   }
 }
-let cart = getCard();
+let cart = getCard()
 
 /**
  * Function savecart is to set items/article into localstorage with JsonStringify
  * JsonStringifychange the object into string
- * Function addCart is to add product that find inside the table, with id & quantity,the quantity product min 1 cant go under 1
  * Then push the product inside cart and save it inside localstorage and push it inside cart and save it
  * Function changeQuantity if there is new qty and id added but inside already has the items with the same id &qty, just change the qty
  * Function getNumberProduct, product number equal quanitity thant return into number.
@@ -24,65 +23,67 @@ let cart = getCard();
  * DisplayCart function to show the result with using boucle for each and emthode inneHTML to gets or sets the HTML syntax describing the element's descendants.
  */
 function saveCart(cart) {
-  localStorage.setItem("cart", JSON.stringify(cart)); // set items inside localstorage
+  localStorage.setItem("cart", JSON.stringify(cart)) // set items inside localstorage
 }
 
-// Add items into cart
+/**
+ * Function addCart is to add product that find inside the table, with id & quantity,the quantity product min 1 cant go under 1
+ */
 function addCart(product) {
-  let foundProduct = cart.find((p) => p.id == product.id); //find product inside tableau
+  let foundProduct = cart.find((p) => p.id == product.id) //find product inside tableau
 
   if (foundProduct) {
-    return changeQuantity(product.id, product.quantity);
+    return changeQuantity(product.id, product.quantity)
   }
-  product.quantity = 1;
-  cart.push(product);
-  saveCart(cart);
+  product.quantity = 1
+  cart.push(product)
+  saveCart(cart)
 }
 
 //----------------------------------------------------------------------------------//
 //Change quantity of products
 function changeQuantity(product, quantity) {
-  let foundProduct = cart.find((p) => p.id === product.id);
+  let foundProduct = cart.find((p) => p.id === product.id)
   if (foundProduct) {
-    const oldCart = cart.filter((items) => items.id !== id);
-    foundProduct.quantity += quantity;
+    const oldCart = cart.filter((items) => items.id !== id)
+    foundProduct.quantity += quantity
     if (foundProduct.quantity <= 0) {
-      return removeFromCart(foundProduct);
+      return removeFromCart(foundProduct)
     }
-    saveCart([...oldCart, foundProduct]);
+    saveCart([...oldCart, foundProduct])
   }
 }
 
 //total of quantity items
 function getNumberProduct() {
-  let number = 0;
+  let number = 0
   for (let product of cart) {
-    number += product.quantity;
+    number += product.quantity
   }
-  return number;
+  return number
 }
 
 //Total of price
 function settotalPrice(cart) {
-  const totalDiv = document.querySelector("#totalPrice"); // select element from DOM
-  const quantityDiv = document.querySelector("#totalQuantity");
-  let total = 0;
-  let quantity = 0;
+  const totalDiv = document.querySelector("#totalPrice") // select element from DOM
+  const quantityDiv = document.querySelector("#totalQuantity")
+  let total = 0
+  let quantity = 0
   for (let product of cart) {
-    total += product.quantity * product.price;
-    quantity += parseInt(product.quantity);
+    total += product.quantity * product.price
+    quantity += parseInt(product.quantity)
   }
-  totalDiv.innerText = total;
-  quantityDiv.innerText = quantity;
+  totalDiv.innerText = total
+  quantityDiv.innerText = quantity
 }
 
 //--------------------------------------------------------------------------------------
 //To show the result of item selected on page web
 function displayCart() {
-  let cartItems = document.getElementById("cart__items");
-  cartItems.innerHTML = "";
+  let cartItems = document.getElementById("cart__items")
+  cartItems.innerHTML = ""
   cart.forEach((product) => {
-    console.log(product);
+    console.log(product)
     cartItems.innerHTML += `
         <article class="cart__item" data-id=${product.id} data-color="${product.color}">
                 <div class="cart__item__img">
@@ -104,12 +105,12 @@ function displayCart() {
                     </div>
                   </div>
                 </div>
-        </article>`;
-  });
+        </article>`
+  })
 }
-displayCart(cart);
-settotalPrice(cart);
-totalProduct = getNumberProduct(cart);
+displayCart(cart)
+settotalPrice(cart)
+totalProduct = getNumberProduct(cart)
 
 //---------------------------------------------------------------------------------------------------//
 /**
@@ -130,25 +131,25 @@ totalProduct = getNumberProduct(cart);
  */
 
 function listeningCount() {
-  let totalQuantities = document.querySelectorAll("input.itemQuantity");
+  let totalQuantities = document.querySelectorAll("input.itemQuantity")
   totalQuantities.forEach(function (input) {
     input.addEventListener("input", function (e) {
-      let quantity = e.target.value;
-      let cardItem = input.closest(".cart__item");
-      let cardId = cardItem.dataset.id;
-      let cardColor = cardItem.dataset.color;
-      let cart = getCard();
+      let quantity = e.target.value
+      let cardItem = input.closest(".cart__item")
+      let cardId = cardItem.dataset.id
+      let cardColor = cardItem.dataset.color
+      let cart = getCard()
       let item = cart.find(
         (element) => element.id === cardId && element.color === cardColor
-      );
-      item.quantity = quantity;
-      addCart(item);
-      saveCart(cart);
-      settotalPrice(cart);
-    });
-  });
+      )
+      item.quantity = quantity
+      addCart(item)
+      saveCart(cart)
+      settotalPrice(cart)
+    })
+  })
 }
-listeningCount();
+listeningCount()
 
 //-----------------------------------------------------------------------------------------//
 /**
@@ -159,21 +160,21 @@ listeningCount();
  */
 
 // Accessing element for button delete inside DOM
-const removeItemBtns = document.querySelectorAll(".deleteItem");
+const removeItemBtns = document.querySelectorAll(".deleteItem")
 
 // Adding the event listener
 removeItemBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
-    let cardItem = btn.closest(".cart__item");
-    let cardId = cardItem.dataset.id;
-    let cardColor = cardItem.dataset.color;
+    let cardItem = btn.closest(".cart__item")
+    let cardId = cardItem.dataset.id
+    let cardColor = cardItem.dataset.color
 
-    cart = cart.filter((p) => p.id !== cardId || p.color !== cardColor);
-    saveCart(cart);
-    settotalPrice(cart);
-    cardItem.remove();
-  });
-});
+    cart = cart.filter((p) => p.id !== cardId || p.color !== cardColor)
+    saveCart(cart)
+    settotalPrice(cart)
+    cardItem.remove()
+  })
+})
 
 //------------------------end of cart--------------------------------------------------------------//
 
@@ -193,93 +194,102 @@ removeItemBtns.forEach((btn) => {
     
  */
 
-const btnSendOrder = document.querySelector("#order");
-console.log(btnSendOrder);
+const btnSendOrder = document.querySelector("#order")
+console.log(btnSendOrder)
 
 btnSendOrder.addEventListener("click", function (e) {
-  e.preventDefault();
+  e.preventDefault()
 
   //----- managing the validation form field---------------------------------------------------------------/
 
-  function formfieldTextEmpty(querySelectorId) {
-    document.querySelector(`#${querySelectorId}`).textContent =
-      "Veuillez remplir le formulaire";
+  function handleError(querySelectorId, txt = "Champs invalid") {
+    document.querySelector(`#${querySelectorId}`).textContent = txt
+  }
+  function formfieldTextEmpty(
+    querySelectorId,
+    txt = "Veuillez remplir le formulaire"
+  ) {
+    document.querySelector(`#${querySelectorId}`).textContent = txt
   }
   function formfieldTextFill(querySelectorId) {
-    document.querySelector(`#${querySelectorId}`).textContent =
-      "Text ne pas valide";
+    document.querySelector(`#${querySelectorId}`).textContent = "Texte invalide"
   }
   function firstnameControl() {
-    const theFirstname = document.querySelector("#firstName").value;
+    const theFirstname = document.querySelector("#firstName").value
     if (/^[A-Za-z]{3,20}$/.test(theFirstname)) {
-      console.log("OK");
-      return true;
+      console.log("OK")
+      return true
     } else {
-      return false;
+      return false
     }
   }
   function lastnameControl() {
-    const theLastname = document.querySelector("#lastName").value;
+    const theLastname = document.querySelector("#lastName").value
     if (/^[A-Za-z]{3,20}$/.test(theLastname)) {
-      console.log("OK");
-      return true;
+      console.log("OK")
+      return true
     } else {
-      return false;
+      return false
     }
   }
   function addressControl() {
-    const theAddressName = document.querySelector("#address").value;
+    const theAddressName = document.querySelector("#address").value
     if (/^[A-Za-z0-9\s]{5,50}$/.test(theAddressName)) {
-      console.log("OK");
-      return true;
+      console.log("OK")
+      return true
     } else {
-      return false;
+      return false
     }
   }
   function cityControl() {
-    const theCityName = document.querySelector("#city").value;
+    const theCityName = document.querySelector("#city").value
     if (/^[A-Za-z]{3,20}$/.test(theCityName)) {
-      console.log("OK");
-      return true;
+      console.log("OK")
+      return true
     } else {
-      return false;
+      return false
     }
   }
   function emailControl() {
-    const theEmailAddress = document.querySelector("#email").value;
+    const theEmailAddress = document.querySelector("#email").value
     if (/^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/.test(theEmailAddress)) {
-      console.log("OK");
-      return true;
+      console.log("OK")
+      return true
     } else {
-      return false;
+      return false
     }
   }
-  firstnameControl() == true
-    ? formfieldTextEmpty("firstNameErrorMsg")
-    : formfieldTextFill("firstNameErrorMsg");
+
+  if (firstnameControl() === false) {
+    handleError("firstNameErrorMsg")
+  }
+  // firstnameControl() == true
+  //   ? formfieldTextEmpty("firstNameErrorMsg", "prenom invalid")
+  //   : formfieldTextFill("firstNameErrorMsg")
 
   lastnameControl() == true
     ? formfieldTextEmpty("lastNameErrorMsg")
-    : formfieldTextFill("lastNameErrorMsg");
+    : formfieldTextFill("lastNameErrorMsg")
 
   addressControl() == true
     ? formfieldTextEmpty("addressErrorMsg")
-    : formfieldTextFill("addressErrorMsg");
+    : formfieldTextFill("addressErrorMsg")
 
   cityControl() == true
     ? formfieldTextEmpty("cityErrorMsg")
-    : formfieldTextFill("cityErrorMsg");
+    : formfieldTextFill("cityErrorMsg")
 
   emailControl() == true
     ? formfieldTextEmpty("emailErrorMsg")
-    : formfieldTextFill("emailErrorMsg");
+    : formfieldTextFill("emailErrorMsg")
 
   // check if cart is empty or not before valid the commands
   function cartControl() {
-    if (cart == null) {
-      return false;
+    console.log({ cart })
+    if (cart == null || cart.length === 0) {
+      return false
     } else {
-      return true;
+      return true
     }
 
     // retourner false si le cart du localStorage est vide (==null)
@@ -298,40 +308,40 @@ btnSendOrder.addEventListener("click", function (e) {
       lastName: document.querySelector("#lastName").value,
       address: document.querySelector("#address").value,
       city: document.querySelector("#city").value,
-      email: document.querySelector("#email").value,
-    };
-    let productId = [];
-    let cart = getCard();
+      email: document.querySelector("#email").value
+    }
+    let productId = []
+    let cart = getCard()
     for (let i = 0; i < cart.length; i++) {
-      productId.push(cart[i].id);
+      productId.push(cart[i].id)
     }
     const toSend = {
       products: productId,
-      contact: contact,
-    };
+      contact: contact
+    }
     const options = {
       method: "POST",
       body: JSON.stringify(toSend),
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    };
+        "Content-Type": "application/json"
+      }
+    }
     fetch("http://localhost:3000/api/products/order", options)
       .then((res) => res.json())
       .then(function (data) {
-        localStorage.clear();
+        localStorage.clear()
 
-        localStorage.setItem("orderId", data.orderId); // registrer order id // INTERDIT !!!!!!!!!!!!!!!!!!!!!!!!
-        window.location.href = "confirmation.html"; // transferer orderId avec url
+        // localStorage.setItem("orderId", data.orderId) // registrer order id // INTERDIT !!!!!!!!!!!!!!!!!!!!!!!!
+        // window.location.href = "confirmation.html?orderId=" + data.orderId // transferer orderId avec url
       })
       .catch(function (err) {
-        alert("Il y a eu un problème avec l'opération fetch: " + err.message);
-      });
+        alert("Il y a eu un problème avec l'opération fetch: " + err.message)
+      })
   } else {
-    alert("Veuillez remplir bien le formulaire");
+    alert("Veuillez remplir bien le formulaire")
   }
-});
+})
 
 /**
  * let productId = []; create variable product id

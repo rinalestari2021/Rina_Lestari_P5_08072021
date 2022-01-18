@@ -16,8 +16,9 @@ console when the server starts, e.g. `Listening on port 3001`.
 
 ### Memo
 
-- afficher les messages d'erreur dans le HTML/DOM (pas d'alert)
-- interdire l'envoi de la commande si le panier est vide
-- l'orderId doit etre envoye a la page de confirmation par l'url (localstoragee interdit)
-- commenter les fonctions
-- remplir excel
+- interdire l'envoi de la commande si le panier est vide // ok
+- l'orderId doit etre envoye a la page de confirmation par l'url (localstoragee interdit) // OK
+- remplir excel // OK
+
+- afficher les messages d'erreur dans le HTML/DOM (pas d'alert) // Wip
+- commenter les fonctions // WIP
