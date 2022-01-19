@@ -11,88 +11,50 @@
  * let check = localStorage.getItem("cart"); Check to verify if the cart is empty if yess put the items inside cart
  */
 
-let productId = new URLSearchParams(window.location.search).get("id")
-const addBtn = document.querySelector("#addToCart")
+let productId = new URLSearchParams(window.location.search).get("id");
+const addBtn = document.querySelector("#addToCart");
 
 function fetchProducts(getId) {
   fetch(`http://localhost:3000/api/products/${getId}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data)
-      const imgNode = document.querySelector("div.item__img")
-      const img = document.createElement("img")
-      img.setAttribute("src", data.imageUrl)
-      img.setAttribute("alt", data.altTxt)
-      imgNode.appendChild(img)
-      document.getElementById(`title`).textContent = data.name
-      document.getElementById(`price`).textContent = data.price
-      document.getElementById(`description`).textContent = data.description
+      console.log(data);
+      const imgNode = document.querySelector("div.item__img");
+      const img = document.createElement("img");
+      img.setAttribute("src", data.imageUrl);
+      img.setAttribute("alt", data.altTxt);
+      imgNode.appendChild(img);
+      document.getElementById(`title`).textContent = data.name;
+      document.getElementById(`price`).textContent = data.price;
+      document.getElementById(`description`).textContent = data.description;
 
-      const colors = document.getElementById("colors")
+      const colors = document.getElementById("colors");
       data.colors.forEach((color) => {
-        var option = document.createElement("option")
-        option.setAttribute("value", color)
-        option.innerText = color
-        colors.appendChild(option)
-      })
-    })
+        var option = document.createElement("option");
+        option.setAttribute("value", color);
+        option.innerText = color;
+        colors.appendChild(option);
+      });
+    });
 }
 addBtn.addEventListener("click", () => {
-  const colorChoice = document.getElementById("colors").value
-  const quantityChoice = document.querySelector("#quantity").value
-  const priceChoice = document.querySelector("#price").innerText
-  const imageChoice = document.querySelector(".item__img img").src
-  const productName = document.querySelector("#title").innerText
+  const colorChoice = document.getElementById("colors").value;
+  const quantityChoice = document.querySelector("#quantity").value;
+  const priceChoice = document.querySelector("#price").innerText;
+  const imageChoice = document.querySelector(".item__img img").src;
+  const productName = document.querySelector("#title").innerText;
 
-  let cart = []
+  let cart = [];
 
-  let check = localStorage.getItem("cart")
-  console.log(check)
+  let check = localStorage.getItem("cart");
+  console.log(check);
   if (check == null) {
-    cart = []
+    cart = [];
   } else {
-    cart = JSON.parse(localStorage.getItem("cart"))
+    cart = JSON.parse(localStorage.getItem("cart"));
   }
 
-  if (colorChoice !== "" && quantityChoice > 0) {
-    let product = {
-      id: productId,
-      title: productName,
-      color: colorChoice,
-      quantity: Number(quantityChoice),
-      imageUrl: imageChoice
-      // price: Number(priceChoice),
-    }
-
-    if (cart.length === 0) {
-      cart.push(product)
-    } else {
-      let check = 0
-      for (let i = 0; i < cart.length; i++) {
-        if (cart[i].id === product.id && cart[i].color === product.color) {
-          cart[i].quantity += product.quantity
-          check = 1
-        }
-      }
-      if (check === 0) {
-        cart.push(product)
-      }
-    }
-    const popupConf = () => {
-      if (window.confirm(`Ajouter au panier`)) {
-        window.location.href = "cart.html"
-      }
-      window.location.href = "cart.html"
-    }
-    popupConf()
-    console.log({ cart })
-    localStorage.setItem("cart", JSON.stringify(cart))
-  }
-})
-
-fetchProducts(productId)
-
-/**
+  /**
  * if (colorChoice !== "" && quantityChoice >;create object product if client choose color 
     and quantity then the other list inside the product
  * if (cart.length === 0) {
@@ -102,3 +64,40 @@ fetchProducts(productId)
  * const popup to create window confirm
  * function appeler productId
  */
+  if (colorChoice !== "" && quantityChoice > 0) {
+    let product = {
+      id: productId,
+      title: productName,
+      color: colorChoice,
+      quantity: Number(quantityChoice),
+      imageUrl: imageChoice,
+      price: Number(priceChoice),
+    };
+
+    if (cart.length === 0) {
+      cart.push(product);
+    } else {
+      let check = 0;
+      for (let i = 0; i < cart.length; i++) {
+        if (cart[i].id === product.id && cart[i].color === product.color) {
+          cart[i].quantity += product.quantity;
+          check = 1;
+        }
+      }
+      if (check === 0) {
+        cart.push(product);
+      }
+    }
+    const popupConf = () => {
+      if (window.confirm(`Ajouter au panier`)) {
+        window.location.href = "cart.html";
+      }
+      window.location.href = "cart.html";
+    };
+    popupConf();
+    console.log({ cart });
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+});
+
+fetchProducts(productId);
