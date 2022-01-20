@@ -165,16 +165,15 @@ listeningCount();
  * the price, quantity and the articles dans le cart
  */
 
-// Accessing element for button delete inside DOM
+/**  Accessing element for button delete inside DOM */
 const removeItemBtns = document.querySelectorAll(".deleteItem");
 
-// Adding the event listener
+/** Adding the event listener */
 removeItemBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
     let cardItem = btn.closest(".cart__item");
     let cardId = cardItem.dataset.id;
     let cardColor = cardItem.dataset.color;
-
     cart = cart.filter((p) => p.id !== cardId || p.color !== cardColor);
     saveCart(cart);
     settotalPrice(cart);
@@ -201,13 +200,10 @@ removeItemBtns.forEach((btn) => {
  */
 
 const btnSendOrder = document.querySelector("#order");
-
 btnSendOrder.addEventListener("click", function (e) {
   e.preventDefault();
 
-  /**
-   * managing the validation form field*/
-
+  /** managing the validation form field*/
   function handleError(querySelectorId, txt = "Champs invalid") {
     document.querySelector(`#${querySelectorId}`).textContent = txt;
   }
@@ -261,7 +257,6 @@ btnSendOrder.addEventListener("click", function (e) {
       return false;
     }
   }
-
   if (firstnameControl() === false) {
     handleError("firstNameErrorMsg");
   }
@@ -277,9 +272,7 @@ btnSendOrder.addEventListener("click", function (e) {
   if (emailControl() === false) {
     handleError("emailErrorMsg");
   }
-
-  /**
-   * check if cart is empty or not before valid the commands */
+  /*** check if cart is empty or not before valid the commands */
   function cartControl() {
     if (cart == null || cart.length === 0) {
       return false;

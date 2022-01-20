@@ -18,7 +18,6 @@ function fetchProducts(getId) {
   fetch(`http://localhost:3000/api/products/${getId}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       const imgNode = document.querySelector("div.item__img");
       const img = document.createElement("img");
       img.setAttribute("src", data.imageUrl);
@@ -47,7 +46,6 @@ addBtn.addEventListener("click", () => {
   let cart = [];
 
   let check = localStorage.getItem("cart");
-  console.log(check);
   if (check == null) {
     cart = [];
   } else {
