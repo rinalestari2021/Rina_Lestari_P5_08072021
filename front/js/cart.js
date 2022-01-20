@@ -6,7 +6,6 @@
  */
 function getCard() {
   let check = localStorage.getItem("cart");
-  console.log({ check });
   if (check == null) {
     return [];
   } else {
@@ -94,7 +93,6 @@ function displayCart() {
   let cartItems = document.getElementById("cart__items");
   cartItems.innerHTML = "";
   cart.forEach((product) => {
-    console.log(product);
     cartItems.innerHTML += `
         <article class="cart__item" data-id=${product.id} data-color="${product.color}">
                 <div class="cart__item__img">
@@ -203,7 +201,6 @@ removeItemBtns.forEach((btn) => {
  */
 
 const btnSendOrder = document.querySelector("#order");
-console.log(btnSendOrder);
 
 btnSendOrder.addEventListener("click", function (e) {
   e.preventDefault();
@@ -284,7 +281,6 @@ btnSendOrder.addEventListener("click", function (e) {
   /**
    * check if cart is empty or not before valid the commands */
   function cartControl() {
-    console.log({ cart });
     if (cart == null || cart.length === 0) {
       return false;
     } else {

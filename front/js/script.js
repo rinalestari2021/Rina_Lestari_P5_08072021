@@ -9,7 +9,6 @@
 fetch("http://localhost:3000/api/products").then((response) => {
   console.log(response);
   response.json().then((products) => {
-    console.log("===========", products);
     for (let product of products) {
       /**create elements(2)*/
       let items = document.getElementById("items");

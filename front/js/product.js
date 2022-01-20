@@ -95,7 +95,6 @@ addBtn.addEventListener("click", () => {
       window.location.href = "cart.html";
     };
     popupConf();
-    console.log({ cart });
     localStorage.setItem("cart", JSON.stringify(cart));
   }
 });
